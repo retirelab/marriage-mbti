@@ -34,8 +34,9 @@
             margin: 0;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start; /* center에서 flex-start로 변경 */
             min-height: 100vh;
+            padding: 24px 0; /* 상하 여백 추가 */
             line-height: 1.6;
         }
 
@@ -607,8 +608,8 @@
         <div class="progress-container">
             <div id="progress-bar" class="progress-bar"></div>
         </div>
-        <div id="question-count" class="question-count-text">1 / 12</div>
-        <div id="question-text" class="question-text">질문이 여기에 표시됩니다.</div>
+        <div id="question-count" class="question-count-text"></div>
+        <div id="question-text" class="question-text"></div>
         
         <div id="answer-buttons">
             <button class="btn btn-outline"></button>
@@ -684,7 +685,9 @@
             </div>
         </div>
         
-        <div class="score-display"><span id="score">0</span><span>점</span></div>
+        <div class="score-display" aria-live="polite" aria-label="궁합 점수">
+            <span id="score">0</span><span>점</span>
+        </div>
         
         <div class="result-box advice-content" id="advice-text"></div>
         
@@ -1050,6 +1053,7 @@
     function startQuiz() {
         state.qIndex = 0;
         resetScores();
+        document.getElementById('progress-bar').style.width = '0%'; // progress bar 초기화 추가
         showScreen('screen-quiz');
         renderQuestion();
     }
