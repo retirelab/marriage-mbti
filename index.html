@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>우리 부부, 어떤 퍼즐일까? - 부부 심리 테스트</title>
-    <!-- 웹 폰트 (Pretendard) 로드 -->
     <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <style>
         /* CSS: 세련된 디자인 및 레이아웃 설정 */
         :root {
@@ -605,6 +605,79 @@
         .label-me { font-weight: bold; color: var(--secondary-color); }
         .label-partner { font-weight: bold; color: var(--primary-color); margin-top: 10px; }
 
+        /* 📸 결과 공유용 숨김 카드 스타일 */
+        #share-card-container {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+            z-index: -1;
+        }
+        .share-card {
+            width: 480px;
+            background: var(--bg-gradient);
+            padding: 50px 35px;
+            box-sizing: border-box;
+            text-align: center;
+            font-family: 'Pretendard', sans-serif;
+        }
+        .share-title {
+            color: var(--secondary-color);
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+        .share-subtitle {
+            color: var(--text-light);
+            font-size: 1rem;
+            margin-bottom: 30px;
+        }
+        .share-mbti-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 20px 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+        }
+        .share-mbti-item { text-align: center; width: 40%; }
+        .share-mbti-role { font-size: 0.95rem; color: #888; font-weight: bold; margin-bottom: 5px; }
+        .share-mbti-value { font-size: 2.2rem; font-weight: 900; }
+        .share-mbti-value.me { color: var(--secondary-color); }
+        .share-mbti-value.partner { color: var(--primary-color); }
+        .share-cross { font-size: 1.5rem; color: #DEE2E6; }
+        .share-score-box { margin: 25px 0; }
+        .share-score {
+            font-size: 5.5rem;
+            font-weight: 900;
+            color: var(--secondary-color);
+            line-height: 1;
+        }
+        .share-score span { font-size: 2rem; color: #ADB5BD; }
+        .share-advice {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: left;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: var(--text-main);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .share-advice strong {
+            color: var(--primary-color);
+            background-color: rgba(255, 117, 140, 0.1);
+            padding: 2px 6px;
+            border-radius: 6px;
+        }
+        .share-footer {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #A4B0BE;
+            font-weight: bold;
+        }
+
         /* ✅ 모바일 최적화 미디어 쿼리 (좌우 여백 꽉 차게 수정) */
         @media (max-width: 600px) {
             body { 
@@ -625,7 +698,6 @@
 
 <div class="app-container">
     
-    <!-- 1. 시작 화면 -->
     <div id="screen-intro" class="screen active">
         <div class="emoji-icon">🧩</div>
         <h1>우리 부부,<br>어떤 퍼즐일까?</h1>
@@ -639,7 +711,6 @@
         </p>
     </div>
 
-    <!-- 1.2 빠른 결과 보기 화면 -->
     <div id="screen-direct-input" class="screen">
         <div class="emoji-icon">💡</div>
         <h2 class="mb-sm">MBTI 빠른 결과 보기</h2>
@@ -660,7 +731,6 @@
         <button class="btn btn-outline" onclick="showScreen('screen-intro')">처음으로 돌아가기</button>
     </div>
 
-    <!-- 1.5 역할 선택 화면 -->
     <div id="screen-role" class="screen">
         <div class="emoji-icon emoji-icon-top">👫</div>
         <h2>당신의 역할은 무엇인가요?</h2>
@@ -670,7 +740,6 @@
         <button class="btn btn-outline btn-role" onclick="selectRole('wife')">나는 아내입니다 🙋‍♀️</button>
     </div>
 
-    <!-- 2. 테스트 화면 -->
     <div id="screen-quiz" class="screen">
         <div class="progress-container">
             <div id="progress-bar" class="progress-bar"></div>
@@ -686,7 +755,6 @@
         </div>
     </div>
 
-    <!-- 3. 내 결과 확인 & 배우자 입력 화면 -->
     <div id="screen-my-result" class="screen">
         <h2>나의 가정생활 성향은?</h2>
         <div class="result-mbti" id="my-mbti"></div>
@@ -708,16 +776,13 @@
             </div>
         </div>
 
-        <!-- 배우자 성향 카드 (빠른 결과 보기 전용, 기본 hidden) -->
         <div id="partner-detail-section" class="hidden">
 
-            <!-- 토글 버튼 -->
             <button id="partner-detail-toggle" class="partner-detail-btn"
                     onclick="togglePartnerDetail()">
                 👫 배우자(<span id="partner-detail-mbti-label"></span>) 성향도 보기 ▼
             </button>
 
-            <!-- 펼쳐지는 카드 -->
             <div id="partner-detail-content" class="partner-detail-content">
                 <div class="result-desc-box" style="margin-top: 12px;">
                     <p id="partner-desc-main" class="result-desc-text"></p>
@@ -736,7 +801,6 @@
 
         </div>
         
-        <!-- 1단계: 파트너 입력 영역 -->
         <div id="partner-input-section">
             <h3 class="partner-input-title">우리 부부의 궁합은 어떨까요?</h3>
             
@@ -754,7 +818,6 @@
             <button class="btn btn-outline" onclick="showCompatibility()">궁합 및 전문가 조언 보기</button>
         </div>
 
-        <!-- 2단계: 두 번째 사람까지 완료 후 나오는 영역 -->
         <div id="couple-mode-finish-section" class="couple-mode-section hidden">
             <div class="couple-finish-box">
                 <h3 class="couple-finish-title">🎉 두 분의 테스트가 완료되었습니다!</h3>
@@ -764,7 +827,6 @@
         </div>
     </div>
 
-    <!-- 4. 궁합 결과 화면 -->
     <div id="screen-compatibility" class="screen">
         <h2>부부 궁합 분석 결과</h2>
         
@@ -786,7 +848,6 @@
         
         <div class="result-box advice-content" id="advice-text"></div>
         
-        <!-- 아코디언 컴포넌트 -->
         <button class="btn-spicy" id="acc-btn-spicy" onclick="toggleAccordion('spicy')">
             ⚠️ [경고] 뼈 때리는 '매운맛' 팩폭 보기 (마상 주의)
         </button>
@@ -796,8 +857,40 @@
             ☠️ [위험] 돌이킬 수 없는 '파국/멸망편' 보기 (절대주의)
         </button>
         <div id="acc-content-doom" class="accordion-content accordion-doom advice-content"></div>
+
+        <button class="btn" style="background: linear-gradient(135deg, #4A4E69, #2D3436); margin-top: 20px;" onclick="downloadImage()">
+            📸 결과 이미지로 저장하기
+        </button>
         
         <button class="btn btn-outline mt-auto" onclick="location.reload()">테스트 다시하기</button>
+    </div>
+
+    <div id="share-card-container">
+        <div id="share-card" class="share-card">
+            <div class="share-title">우리 부부 심리 테스트</div>
+            <div class="share-subtitle">과연 우리 부부의 궁합은?</div>
+            
+            <div class="share-mbti-box">
+                <div class="share-mbti-item">
+                    <div class="share-mbti-role">나</div>
+                    <div id="share-my-mbti" class="share-mbti-value me"></div>
+                </div>
+                <div class="share-cross">✖</div>
+                <div class="share-mbti-item">
+                    <div class="share-mbti-role">배우자</div>
+                    <div id="share-partner-mbti" class="share-mbti-value partner"></div>
+                </div>
+            </div>
+
+            <div class="share-score-box">
+                <div class="share-score"><span id="share-score-value"></span><span>점</span></div>
+            </div>
+
+            <div class="share-advice" id="share-advice-content">
+                </div>
+
+            <div class="share-footer">🧩 우리 부부, 어떤 퍼즐일까?</div>
+        </div>
     </div>
 
 </div>
@@ -1354,6 +1447,35 @@
         btn.innerHTML = isOpen
             ? `👫 배우자(<span id="partner-detail-mbti-label">${label}</span>) 성향 닫기 ▲`
             : `👫 배우자(<span id="partner-detail-mbti-label">${label}</span>) 성향도 보기 ▼`;
+    }
+
+    // 📸 이미지 다운로드 함수
+    function downloadImage() {
+        // 1. 숨겨진 카드에 데이터 채우기
+        document.getElementById('share-my-mbti').textContent = document.getElementById('final-my-mbti').textContent;
+        document.getElementById('share-partner-mbti').textContent = document.getElementById('final-partner-mbti').textContent;
+        document.getElementById('share-score-value').textContent = document.getElementById('score').textContent;
+        
+        // 마라맛/멸망편이 아닌, 순수 '따뜻한 조언' 영역(#advice-text)만 복사
+        document.getElementById('share-advice-content').innerHTML = document.getElementById('advice-text').innerHTML;
+
+        // 2. 캡처할 타겟 지정
+        const shareCard = document.getElementById('share-card');
+        
+        // 3. html2canvas로 이미지 변환 실행
+        html2canvas(shareCard, {
+            scale: 2, // 고해상도 설정
+            backgroundColor: '#ffffff' // 투명 영역 방지
+        }).then(canvas => {
+            // 4. 기기에 JPG 다운로드
+            const link = document.createElement('a');
+            link.download = '부부궁합테스트_결과.jpg';
+            link.href = canvas.toDataURL('image/jpeg', 0.9);
+            link.click();
+        }).catch(err => {
+            console.error("이미지 저장 중 오류 발생:", err);
+            alert("이미지를 저장하는 중 문제가 발생했습니다.");
+        });
     }
 
 </script>
