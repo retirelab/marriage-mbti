@@ -7,14 +7,16 @@
     <!-- 웹 폰트 (Pretendard) 로드 -->
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
     <style>
-        /* CSS: 디자인 및 레이아웃 설정 */
+        /* CSS: 세련된 디자인 및 레이아웃 설정 */
         :root {
-            --primary-color: #E07A5F; /* 따뜻한 코랄 */
-            --secondary-color: #3D405B; /* 차분한 네이비 */
-            --bg-color: #F4F1DE; /* 오트밀 배경 */
-            --card-bg: #FFFFFF;
-            --text-main: #333333;
-            --text-light: #666666;
+            --primary-color: #FF758C; /* 화사한 핑크 코랄 */
+            --primary-dark: #FF5A73;
+            --secondary-color: #4A4E69; /* 깊이있는 네이비 */
+            --bg-gradient: linear-gradient(135deg, #FFF0F5 0%, #F5E6E8 100%);
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --text-main: #2D3436;
+            --text-light: #636E72;
+            --danger-color: #FF4757;
         }
 
         * {
@@ -23,7 +25,7 @@
         }
 
         body {
-            background-color: var(--bg-color);
+            background: var(--bg-gradient);
             color: var(--text-main);
             margin: 0;
             display: flex;
@@ -36,100 +38,131 @@
         .app-container {
             background-color: var(--card-bg);
             width: 100%;
-            max-width: 500px;
-            min-height: 600px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            max-width: 480px;
+            min-height: 650px;
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.08), 0 2px 15px rgba(0,0,0,0.03);
             padding: 40px 30px;
             position: relative;
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto;
             display: flex;
             flex-direction: column;
+            backdrop-filter: blur(10px);
         }
+
+        /* 스크롤바 숨기기 */
+        .app-container::-webkit-scrollbar { display: none; }
+        .app-container { -ms-overflow-style: none; scrollbar-width: none; }
 
         /* 각 화면(Section) 숨김/표시 처리 */
         .screen {
             display: none;
             flex-direction: column;
             height: 100%;
-            animation: fadeIn 0.5s ease-in-out;
+            animation: slideUpFade 0.5s ease-out forwards;
         }
         .screen.active {
             display: flex;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        h1, h2 {
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .emoji-icon {
+            text-align: center;
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        h1, h2, h3 {
             color: var(--secondary-color);
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            line-height: 1.3;
         }
+
+        h1 { font-size: 2rem; font-weight: 800; }
+        h2 { font-size: 1.5rem; font-weight: 700; }
 
         p {
             text-align: center;
             color: var(--text-light);
             margin-bottom: 30px;
             word-break: keep-all;
+            font-size: 0.95rem;
         }
 
         .btn {
-            background-color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
             color: white;
             border: none;
             padding: 16px 24px;
-            border-radius: 12px;
+            border-radius: 16px;
             font-size: 1.1rem;
-            font-weight: bold;
+            font-weight: 700;
             cursor: pointer;
-            transition: background-color 0.3s, transform 0.1s;
+            transition: all 0.3s ease;
             width: 100%;
             margin-bottom: 15px;
+            box-shadow: 0 8px 20px rgba(255, 117, 140, 0.3);
         }
-        .btn:hover { background-color: #D0694E; }
-        .btn:active { transform: scale(0.98); }
+        .btn:hover { 
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(255, 117, 140, 0.4);
+        }
+        .btn:active { transform: translateY(0); }
         
         .btn-outline {
-            background-color: transparent;
+            background: transparent;
             color: var(--secondary-color);
             border: 2px solid var(--secondary-color);
+            box-shadow: none;
         }
         .btn-outline:hover {
             background-color: var(--secondary-color);
             color: white;
+            box-shadow: 0 8px 20px rgba(74, 78, 105, 0.2);
         }
 
         /* 진행률 바 */
         .progress-container {
             width: 100%;
-            background-color: #eee;
-            border-radius: 10px;
-            height: 8px;
-            margin-bottom: 30px;
+            background-color: #E9ECEF;
+            border-radius: 20px;
+            height: 10px;
+            margin-bottom: 25px;
+            overflow: hidden;
         }
         .progress-bar {
             height: 100%;
-            background-color: var(--primary-color);
-            border-radius: 10px;
+            background: linear-gradient(90deg, #FF9A9E 0%, var(--primary-color) 100%);
+            border-radius: 20px;
             width: 0%;
-            transition: width 0.3s ease;
+            transition: width 0.5s ease-out;
         }
 
         .question-text {
-            font-size: 1.3rem;
-            font-weight: 600;
+            font-size: 1.25rem;
+            font-weight: 700;
             text-align: center;
             margin-bottom: 30px;
             color: var(--secondary-color);
-            flex-grow: 0;
-            min-height: 80px;
+            min-height: 90px;
             display: flex;
             align-items: center;
             justify-content: center;
-            line-height: 1.4;
+            line-height: 1.5;
+            word-break: keep-all;
         }
 
         /* 4개 선택지를 위한 레이아웃 조정 */
@@ -141,147 +174,208 @@
         }
 
         #answer-buttons .btn-outline {
-            text-align: left; /* 텍스트가 길어질 수 있으므로 좌측 정렬 */
-            padding: 15px 20px;
-            font-size: 1rem;
+            text-align: left; 
+            padding: 16px 22px;
+            font-size: 1.05rem;
             line-height: 1.4;
             height: auto;
             word-break: keep-all;
+            border-radius: 16px;
+            border: 2px solid #E9ECEF;
+            color: var(--text-main);
+            background-color: #fff;
+            transition: all 0.2s;
+        }
+        #answer-buttons .btn-outline:hover {
+            border-color: var(--primary-color);
+            background-color: #FFF0F5;
+            color: var(--primary-dark);
+            box-shadow: 0 4px 15px rgba(255, 117, 140, 0.1);
+            transform: translateY(-2px);
         }
 
         .disclaimer {
             font-size: 0.8rem;
-            color: #999;
+            color: #ADB5BD;
             margin-top: auto;
             padding-top: 20px;
-            border-top: 1px solid #eee;
+            border-top: 1px dashed #DEE2E6;
         }
 
         /* 결과 화면 스타일 */
         .result-mbti {
-            font-size: 3rem;
-            font-weight: 800;
-            color: var(--primary-color);
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-color), #FFA07A);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             text-align: center;
-            margin: 10px 0;
+            margin: 15px 0;
+            letter-spacing: 2px;
         }
         
         .result-box {
-            background-color: #f9f9f9;
-            padding: 20px;
-            border-radius: 15px;
+            background-color: #F8F9FA;
+            padding: 25px;
+            border-radius: 20px;
             margin-bottom: 20px;
+            border: 1px solid #E9ECEF;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
         }
 
         select {
             width: 100%;
-            padding: 15px;
-            border-radius: 10px;
-            border: 2px solid #ddd;
+            padding: 16px;
+            border-radius: 14px;
+            border: 2px solid #DEE2E6;
             font-size: 1.1rem;
             margin-bottom: 20px;
             outline: none;
             font-family: inherit;
+            background-color: #fff;
+            transition: border-color 0.3s;
+            cursor: pointer;
         }
         select:focus { border-color: var(--primary-color); }
 
         .score-display {
-            font-size: 4rem;
-            font-weight: 800;
+            font-size: 4.5rem;
+            font-weight: 900;
             text-align: center;
             color: var(--secondary-color);
-            margin: 20px 0;
+            margin: 10px 0 25px 0;
+            line-height: 1;
+            text-shadow: 2px 2px 0px #eee;
         }
+        .score-display span:last-child {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ADB5BD;
+            margin-left: 5px;
+            text-shadow: none;
+        }
+
         .advice-content {
             text-align: left;
-            line-height: 1.8;
-            font-size: 0.95rem;
+            line-height: 1.7;
+            font-size: 1rem;
         }
         .advice-content strong {
             color: var(--primary-color);
+            background-color: rgba(255, 117, 140, 0.1);
+            padding: 2px 6px;
+            border-radius: 6px;
         }
 
-        /* 매운맛 버튼 및 컨텐츠 스타일 (신규 추가) */
+        .mbti-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+        }
+        .mbti-badge.me { background-color: #F1F3F5; color: var(--secondary-color); }
+        .mbti-badge.partner { background-color: rgba(255, 117, 140, 0.15); color: var(--primary-color); }
+
+        /* 매운맛 버튼 및 컨텐츠 스타일 */
         .spicy-toggle-btn {
-            background-color: #ff4d4d;
+            background: linear-gradient(135deg, #FF6B6B, #EE5253);
             color: white;
             border: none;
-            padding: 15px;
-            border-radius: 12px;
+            padding: 16px;
+            border-radius: 16px;
             width: 100%;
-            font-weight: bold;
-            font-size: 1rem;
+            font-weight: 700;
+            font-size: 1.05rem;
             cursor: pointer;
-            margin-top: 10px;
-            margin-bottom: 20px;
+            margin-top: 15px;
+            margin-bottom: 10px;
             transition: all 0.3s;
-            box-shadow: 0 4px 10px rgba(255, 77, 77, 0.3);
+            box-shadow: 0 6px 15px rgba(238, 82, 83, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
         .spicy-toggle-btn:hover {
-            background-color: #cc0000;
-            transform: scale(0.98);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(238, 82, 83, 0.4);
         }
         .spicy-content {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.5s ease-out, padding 0.5s ease, margin 0.5s ease;
-            background-color: #fff0f0;
-            border-radius: 15px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background-color: #FFF5F5;
+            border-radius: 16px;
             margin-top: 0;
-            padding: 0 20px; /* 닫혀있을 땐 패딩 0 */
+            padding: 0 20px; 
             opacity: 0;
+            border-left: 0px solid var(--danger-color);
         }
         .spicy-content.open {
-            max-height: 1500px; /* 컨텐츠가 충분히 들어갈 높이 */
-            padding: 20px;
+            max-height: 1500px; 
+            padding: 25px 20px;
             margin-bottom: 20px;
-            border: 2px dashed #ff4d4d;
             opacity: 1;
+            border-left: 5px solid var(--danger-color);
+            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.1);
         }
         .spicy-content p strong {
-            color: #cc0000;
+            color: var(--danger-color);
+            background: transparent;
+            padding: 0;
         }
 
-        /* 멸망편 버튼 및 컨텐츠 스타일 (신규 추가) */
+        /* 멸망편 버튼 및 컨텐츠 스타일 */
         .doom-toggle-btn {
-            background-color: #000000;
-            color: #ff3333;
-            border: 1px solid #ff3333;
-            padding: 15px;
-            border-radius: 12px;
+            background: linear-gradient(135deg, #2F3542, #1E272E);
+            color: #FF6B81;
+            border: 1px solid #57606F;
+            padding: 16px;
+            border-radius: 16px;
             width: 100%;
-            font-weight: bold;
-            font-size: 1rem;
+            font-weight: 700;
+            font-size: 1.05rem;
             cursor: pointer;
             margin-top: 10px;
             margin-bottom: 20px;
             transition: all 0.3s;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 6px 15px rgba(30, 39, 46, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
         .doom-toggle-btn:hover {
-            background-color: #1a0000;
-            transform: scale(0.98);
+            background: #1E272E;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(30, 39, 46, 0.6);
+            border-color: #FF4757;
         }
         .doom-content {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.5s ease-out, padding 0.5s ease, margin 0.5s ease;
-            background-color: #0d0d0d;
-            color: #cccccc;
-            border-radius: 15px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background-color: #2F3542;
+            color: #F1F2F6;
+            border-radius: 16px;
             margin-top: 0;
-            padding: 0 20px; /* 닫혀있을 땐 패딩 0 */
+            padding: 0 20px; 
             opacity: 0;
+            border-left: 0px solid #FF4757;
         }
         .doom-content.open {
             max-height: 1500px;
-            padding: 20px;
+            padding: 25px 20px;
             margin-bottom: 20px;
-            border: 2px solid #ff3333;
             opacity: 1;
+            border-left: 5px solid #FF4757;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
         .doom-content p strong {
-            color: #ff4d4d;
+            color: #FF6B81;
+            background: transparent;
         }
 
     </style>
@@ -292,22 +386,21 @@
     
     <!-- 1. 시작 화면 -->
     <div id="screen-intro" class="screen active">
-        <div style="text-align: center; font-size: 3rem; margin-bottom: 10px;">🧩</div>
+        <div class="emoji-icon">🧩</div>
         <h1>우리 부부,<br>어떤 퍼즐일까?</h1>
         <p>12개의 디테일한 질문을 통해 나의 부부관계 유형을 알아보고,<br>배우자와의 상호 보완적인 궁합을 분석해 보세요.</p>
         <div style="flex-grow: 1;"></div>
         <button class="btn" onclick="showScreen('screen-role')">테스트 시작하기</button>
-        <!-- 빠른 결과 보기 버튼 추가 -->
-        <button class="btn btn-outline" onclick="showScreen('screen-direct-input')">이미 MBTI를 안다면? 결과 바로보기</button>
+        <button class="btn btn-outline" onclick="showScreen('screen-direct-input')">💡 이미 MBTI를 안다면? 결과 바로보기</button>
         <p class="disclaimer">
             * 본 테스트는 MBTI 심리 이론을 바탕으로 제작되었습니다.<br>
             의학적 진단이 아니며, 관계 개선을 위한 즐거운 참고 자료로 활용해 주세요.
         </p>
     </div>
 
-    <!-- 1.2 빠른 결과 보기 화면 (신규 추가) -->
+    <!-- 1.2 빠른 결과 보기 화면 -->
     <div id="screen-direct-input" class="screen">
-        <div style="text-align: center; font-size: 3rem; margin-bottom: 10px; margin-top: 20px;">💡</div>
+        <div class="emoji-icon">💡</div>
         <h2 style="margin-bottom: 10px;">MBTI 빠른 결과 보기</h2>
         <p style="margin-bottom: 30px;">나와 배우자의 MBTI를 이미 알고 계시군요!<br>선택 후 바로 궁합을 확인해 보세요.</p>
         
@@ -342,9 +435,9 @@
         <button class="btn btn-outline" onclick="showScreen('screen-intro')">처음으로 돌아가기</button>
     </div>
 
-    <!-- 1.5 역할 선택 화면 (신규 추가) -->
+    <!-- 1.5 역할 선택 화면 -->
     <div id="screen-role" class="screen">
-        <div style="text-align: center; font-size: 3rem; margin-bottom: 20px; margin-top: 40px;">👫</div>
+        <div class="emoji-icon" style="margin-top: 40px;">👫</div>
         <h2>당신의 역할은 무엇인가요?</h2>
         <p style="margin-bottom: 40px;">선택하신 역할에 맞춰<br>더 현실적이고 디테일한 상황이 제시됩니다.</p>
         
@@ -361,7 +454,6 @@
         <div id="question-text" class="question-text">질문이 여기에 표시됩니다.</div>
         
         <div id="answer-buttons">
-            <!-- 자바스크립트에서 클릭 이벤트와 텍스트를 동적으로 덮어쓰므로 onclick 속성을 제거합니다 -->
             <button class="btn btn-outline"></button>
             <button class="btn btn-outline"></button>
             <button class="btn btn-outline"></button>
@@ -374,33 +466,27 @@
         <h2>나의 가정생활 성향은?</h2>
         <div class="result-mbti" id="my-mbti">ESTJ</div>
         
-        <!-- 상세 결과 박스로 대폭 개편 -->
         <div class="result-box" style="padding: 0; background: transparent; border: none; box-shadow: none;">
-            <!-- 한 줄 요약 -->
             <div style="background: white; border-radius: 20px; padding: 20px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); border: 1px solid #E9ECEF;">
                 <p id="my-desc-main" style="color: var(--text-main); margin:0; font-weight: bold; font-size: 1.1rem; text-align: center; line-height: 1.5;"></p>
             </div>
             
-            <!-- 장점/단점 리스트 -->
             <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px;">
                 <div style="background-color: #F3FBF5; border-radius: 16px; padding: 20px; text-align: left; border: 1px solid #D3EADD;">
                     <h4 style="margin: 0 0 12px 0; color: #20C997; display: flex; align-items: center; gap: 6px; font-size: 1.1rem;"><span>👍</span> 가정생활 속 장점</h4>
-                    <ul id="my-pros" style="margin: 0; padding-left: 22px; color: #2B8A3E; font-size: 0.95rem; line-height: 1.7;">
-                    </ul>
+                    <ul id="my-pros" style="margin: 0; padding-left: 22px; color: #2B8A3E; font-size: 0.95rem; line-height: 1.7;"></ul>
                 </div>
                 <div style="background-color: #FFF5F5; border-radius: 16px; padding: 20px; text-align: left; border: 1px solid #FFE3E3;">
                     <h4 style="margin: 0 0 12px 0; color: #FF6B6B; display: flex; align-items: center; gap: 6px; font-size: 1.1rem;"><span>⚠️</span> 현실적인 단점 / 주의점</h4>
-                    <ul id="my-cons" style="margin: 0; padding-left: 22px; color: #C92A2A; font-size: 0.95rem; line-height: 1.7;">
-                    </ul>
+                    <ul id="my-cons" style="margin: 0; padding-left: 22px; color: #C92A2A; font-size: 0.95rem; line-height: 1.7;"></ul>
                 </div>
             </div>
         </div>
         
-        <!-- 1단계: 파트너 입력 또는 이어하기 영역 -->
+        <!-- 1단계: 파트너 입력 영역 -->
         <div id="partner-input-section">
             <h3 style="text-align: center; margin-top: 10px; font-size: 1.15rem; border-top: 2px dashed #E9ECEF; padding-top: 30px;">우리 부부의 궁합은 어떨까요?</h3>
             
-            <!-- 부부 동시 진행 (폰 넘겨주기) -->
             <div style="background: rgba(255, 117, 140, 0.05); padding: 20px; border-radius: 16px; margin-bottom: 25px; border: 1px solid rgba(255, 117, 140, 0.2);">
                 <p style="margin-bottom: 12px; font-weight: bold; color: var(--primary-dark); font-size: 1.05rem;">배우자도 지금 바로 테스트해 볼까요?</p>
                 <button class="btn" style="margin-bottom: 0; background: linear-gradient(135deg, #FF9A9E, #FECFEF); color: var(--secondary-color);" onclick="startPartnerTest()">📲 배우자에게 폰 넘겨주기 (테스트 시작)</button>
@@ -408,7 +494,6 @@
 
             <p style="text-align: center; color: #ADB5BD; font-size: 0.9rem; font-weight: bold; margin-bottom: 20px;">--- OR ---</p>
 
-            <!-- 기존 MBTI 입력 (수동) -->
             <p style="margin-bottom: 10px; font-size: 0.9rem;">배우자의 MBTI를 이미 안다면 선택해 주세요.</p>
             <select id="partner-mbti">
                 <option value="" disabled selected>배우자의 MBTI 선택</option>
@@ -432,33 +517,28 @@
                 <button class="btn" style="margin-bottom: 0;" onclick="showCompatibility()">💞 최종 궁합 결과 보기</button>
             </div>
         </div>
-
     </div>
 
     <!-- 4. 궁합 결과 화면 -->
     <div id="screen-compatibility" class="screen">
         <h2>부부 궁합 분석 결과</h2>
-        <div style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 10px;">
+        
+        <div style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 20px;">
             <div style="text-align: center;">
-                <div style="font-size: 0.8rem; color: #888;">나</div>
-                <div id="final-my-mbti" style="font-weight: bold; color: var(--secondary-color);"></div>
+                <div style="font-size: 0.85rem; color: #888; margin-bottom: 5px; font-weight: 600;">나</div>
+                <div id="final-my-mbti" class="mbti-badge me"></div>
             </div>
-            <div style="font-size: 1.5rem; color: #ccc;">✖</div>
+            <div style="font-size: 1.5rem; color: #DEE2E6; font-weight: 300;">✖</div>
             <div style="text-align: center;">
-                <div style="font-size: 0.8rem; color: #888;">배우자</div>
-                <div id="final-partner-mbti" style="font-weight: bold; color: var(--primary-color);"></div>
+                <div style="font-size: 0.85rem; color: #888; margin-bottom: 5px; font-weight: 600;">배우자</div>
+                <div id="final-partner-mbti" class="mbti-badge partner"></div>
             </div>
         </div>
         
-        <div class="score-display"><span id="score">0</span><span style="font-size: 1.5rem;">점</span></div>
+        <div class="score-display"><span id="score">0</span><span>점</span></div>
         
-        <!-- 따뜻한 위로 (기본 컨텐츠) -->
         <div class="result-box advice-content" id="advice-text"></div>
-        
-        <!-- 매운맛 토글 영역 -->
         <div id="spicy-container"></div>
-        
-        <!-- 멸망편 토글 영역 (신규 추가) -->
         <div id="doom-container"></div>
         
         <button class="btn btn-outline" style="margin-top: auto;" onclick="location.reload()">테스트 다시하기</button>
@@ -468,10 +548,8 @@
 
 <script>
     /* JavaScript: 앱의 동작 로직과 데이터 */
-
     const questionsData = {
         husband: [
-            // E/I : 에너지 방향 (모임, 휴식, 활동)
             { type: "EI", q: "오랜만의 여유로운 주말, 아내와 어떻게 시간을 보내고 싶나요?", options: [
                 { text: "아내가 좋아할 만한 핫플레이스나 맛집을 찾아 적극적으로 외출을 제안한다.", val: "E" },
                 { text: "부부 동반 모임이나 친한 지인들을 초대해 홈파티를 즐기고 싶다.", val: "E" },
@@ -490,8 +568,6 @@
                 { text: "일단 샤워부터 하고 조용히 혼자만의 휴식 시간을 조금 갖는다.", val: "I" },
                 { text: "피곤해서 말수가 줄어들고, 아내의 말을 조용히 듣기만 한다.", val: "I" }
             ]},
-            
-            // S/N : 인식 기능 (대화 주제, 선물, 여행)
             { type: "SN", q: "아내와 일상적인 대화를 나눌 때 주로 어떤 주제를 이야기하나요?", options: [
                 { text: "오늘 회사 일, 저녁 메뉴, 관리비 등 당장 겪고 있는 현실적인 일들.", val: "S" },
                 { text: "최근 본 뉴스 기사나 주변 지인들의 근황 등 사실적인 정보들.", val: "S" },
@@ -510,8 +586,6 @@
                 { text: "'이번 여행의 테마는 힐링이야!' 하고 전체적인 분위기나 컨셉부터 잡는다.", val: "N" },
                 { text: "우연히 발견하는 예쁜 골목이나 뜻밖의 장소를 만나는 것을 더 기대한다.", val: "N" }
             ]},
-
-            // T/F : 판단 기능 (갈등, 위로, 애정 표현) -> 남편 입장에서 매우 중요
             { type: "TF", q: "아내가 '오늘 하루 종일 애 보느라 너무 힘들었어. 뼈가 다 쑤시네'라고 한다면?", options: [
                 { text: "'어디가 제일 아파? 내일 정형외과 예약해 줄까? 파스 붙여줄게.' (해결책 제시)", val: "T" },
                 { text: "'요즘 애가 많이 무거워져서 더 그렇지? 유모차를 바꿀까?' (원인 분석)", val: "T" },
@@ -530,15 +604,13 @@
                 { text: "퇴근 후 나를 보며 진심으로 환하게 웃어주고 따뜻한 말을 건네줄 때.", val: "F" },
                 { text: "작은 일에도 감동하고 나에게 '사랑해, 고마워'라는 애정 표현을 자주 해줄 때.", val: "F" }
             ]},
-
-            // J/P : 생활 양식 (계획, 정리, 규칙)
             { type: "JP", q: "가사 노동(집안일) 분담에 대한 나의 평소 생각은?", options: [
                 { text: "빨래는 나, 설거지는 아내처럼 구역과 요일을 명확히 정해두는 것이 가장 좋다.", val: "J" },
                 { text: "정해진 규칙이 없으면 결국 한 사람만 하게 되므로 체계가 필요하다.", val: "J" },
                 { text: "그때그때 덜 피곤하고 여유 있는 사람이 융통성 있게 알아서 하면 된다.", val: "P" },
                 { text: "각 잡고 치우기보단, 몰아두었다가 주말에 음악 틀고 한 번에 대청소하는 게 좋다.", val: "P" }
             ]},
-            { type: "JP", q: "아내와 데이트 중, 예약해 둔 식당이 개인 사정으로 문 문을 닫았다면?", options: [
+            { type: "JP", q: "아내와 데이트 중, 예약해 둔 식당이 개인 사정으로 문을 닫았다면?", options: [
                 { text: "이럴 줄 알고 미리 알아둔 근처 '플랜 B' 식당으로 지체 없이 이동한다.", val: "J" },
                 { text: "일정이 틀어져서 살짝 스트레스를 받으며 빠르게 다른 맛집을 검색한다.", val: "J" },
                 { text: "'어쩔 수 없지 뭐!' 하며 오히려 근처 걷다가 눈에 띄는 아무 식당이나 들어간다.", val: "P" },
@@ -552,7 +624,6 @@
             ]}
         ],
         wife: [
-            // 아내용 데이터 세트
             { type: "EI", q: "오랜만의 여유로운 주말, 남편과 어떻게 시간을 보내고 싶나요?", options: [
                 { text: "평소 가보고 싶었던 카페나 예쁜 장소를 찾아 남편과 적극적으로 데이트를 나간다.", val: "E" },
                 { text: "부부 동반 모임에 나가 사람들과 어울리거나, 친구네 부부와 캠핑을 간다.", val: "E" },
@@ -562,7 +633,7 @@
             { type: "EI", q: "남편의 회사 동료들이나 시댁 식구들이 모인 큰 자리에 참석했을 때 나는?", options: [
                 { text: "특유의 친화력으로 분위기를 주도하며 사람들과 대화하는 것을 즐긴다.", val: "E" },
                 { text: "처음 보는 사람에게도 어색함 없이 먼저 다가가 웃으며 인사를 건넨다.", val: "E" },
-                { text: "주로 남편 옆에 조용히 앉아 질문에 대답하며 미소를 띠는 편이다.", val: "I" },
+                { text: "주로 남편 옆에 조용히 앉아 질문에 대답하며 미소를 일관하는 편이다.", val: "I" },
                 { text: "사람이 많으면 기가 빨려서 빨리 이 모임이 끝나고 집에 가고 싶어진다.", val: "I" }
             ]},
             { type: "EI", q: "육아나 회사 일로 피곤했던 하루, 퇴근한 남편을 맞이할 때?", options: [
@@ -571,7 +642,6 @@
                 { text: "말할 기운도 없어서 일단 남편이 오면 교대하고 나만의 조용한 휴식을 원한다.", val: "I" },
                 { text: "남편이 먼저 말을 걸어줄 때까지 기다리며 차분하게 저녁을 준비한다.", val: "I" }
             ]},
-            
             { type: "SN", q: "남편과 일상적인 대화를 나눌 때 주로 어떤 주제를 이야기하나요?", options: [
                 { text: "아이 교육비, 대출 이자, 내일 장보기 목록 등 현실적인 가계 운영 이야기.", val: "S" },
                 { text: "동네 이웃이나 지인들에게 실제로 있었던 일, 뉴스에서 본 사건 사고.", val: "S" },
@@ -590,7 +660,6 @@
                 { text: "'이번엔 감성 숙소에서 사진 백만 장 찍자!' 하며 전체 컨셉과 무드부터 생각한다.", val: "N" },
                 { text: "현지에서 렌트카 타고 가다가 풍경 좋은 곳 있으면 무작정 차 세우고 즐긴다.", val: "N" }
             ]},
-
             { type: "TF", q: "내가 '오늘 부장님한테 진짜 억울하게 깨졌어'라고 우울해할 때, 남편의 어떤 반응이 좋은가요?", options: [
                 { text: "'자초지종을 말해봐. 자기가 실수한 건 없어?' (원인 파악) -> 은근히 빈정 상하지만 이성적 도움은 됨.", val: "T" },
                 { text: "'억울하겠다. 그 부장님이 이상한 거야. 이직 준비해.' (객관적 조언) -> 해결책이 속 시원하다.", val: "T" },
@@ -609,7 +678,6 @@
                 { text: "예고 없이 다가와 뽀뽀해 주거나, 나를 빤히 보며 '예쁘다'고 애정 표현을 해줄 때.", val: "F" },
                 { text: "내가 지나가듯 한 말을 잊지 않고 기억했다가 소소하게 챙겨줄 때 (세심한 배려).", val: "F" }
             ]},
-
             { type: "JP", q: "집 안 정리 정돈에 대한 나의 평소 기준은?", options: [
                 { text: "물건은 항상 제자리에 있어야 마음이 편하고, 어질러져 있으면 스트레스받는다.", val: "J" },
                 { text: "주기적으로 유통기한을 확인하고 냉장고나 펜트리를 각 잡아 정리하는 편이다.", val: "J" },
@@ -631,32 +699,28 @@
         ]
     };
 
-    let activeQuestions = []; // 남편/아내 선택 후 사용할 질문 배열
-    let currentRole = ""; // 'husband' or 'wife'
+    let activeQuestions = []; 
+    let currentRole = ""; 
     let currentQuestionIndex = 0;
     let scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
     let myMBTI = "";
     
-    // 이어하기(커플 모드)를 위한 추가 변수
-    let currentTestPhase = 1; // 1: 첫 번째 사람 테스트 중, 2: 두 번째 사람 테스트 중
+    let currentTestPhase = 1; 
     let firstUserMBTI = ""; 
     let secondUserMBTI = "";
 
-    // 2. 화면 전환 함수
     function showScreen(screenId) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById(screenId).classList.add('active');
     }
 
-    // 2.5. 역할 선택 처리
     function selectRole(role) {
         currentRole = role;
         activeQuestions = questionsData[role];
-        currentTestPhase = 1; // 역할 선택 시 무조건 1단계로 초기화
+        currentTestPhase = 1; 
         startQuiz();
     }
 
-    // 3. 퀴즈 시작
     function startQuiz() {
         currentQuestionIndex = 0;
         scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
@@ -664,32 +728,25 @@
         renderQuestion();
     }
 
-    // 4. 질문 렌더링 (선택지 랜덤 섞기 적용)
     function renderQuestion() {
         const qData = activeQuestions[currentQuestionIndex];
         document.getElementById('question-count').innerText = `${currentQuestionIndex + 1} / ${activeQuestions.length}`;
         document.getElementById('question-text').innerText = qData.q;
         
-        // 원본 배열을 복사한 뒤 랜덤하게 순서를 섞어줍니다 (매번 선택지 위치가 바뀜)
         const shuffledOptions = [...qData.options].sort(() => Math.random() - 0.5);
-
         const buttons = document.getElementById('answer-buttons').querySelectorAll('button');
         
-        // 4개의 버튼에 섞인 데이터를 각각 바인딩
         for(let i=0; i<4; i++) {
             buttons[i].innerText = shuffledOptions[i].text;
-            // 버튼 클릭 시, 섞인 옵션의 정확한 값(E, I 등)을 전달하도록 이벤트 설정
             buttons[i].onclick = () => selectAnswer(shuffledOptions[i].val);
         }
 
-        // 진행률 바 업데이트
         const progress = ((currentQuestionIndex + 1) / activeQuestions.length) * 100;
         document.getElementById('progress-bar').style.width = `${progress}%`;
     }
 
-    // 5. 답변 선택 처리 (인덱스 대신 선택된 값을 직접 받아서 처리)
     function selectAnswer(selectedValue) {
-        scores[selectedValue] += 1; // 전달받은 성향(E, I 등)에 1점 추가
+        scores[selectedValue] += 1; 
         currentQuestionIndex++;
 
         if (currentQuestionIndex < activeQuestions.length) {
@@ -699,7 +756,6 @@
         }
     }
 
-    // 6. MBTI 계산 로직
     function calculateMBTI() {
         const EorI = scores.E >= scores.I ? "E" : "I";
         const SorN = scores.S >= scores.N ? "S" : "N";
@@ -707,7 +763,6 @@
         const JorP = scores.J >= scores.P ? "J" : "P";
         myMBTI = EorI + SorN + TorF + JorP;
 
-        // 현재 진행 단계에 따라 MBTI 저장
         if (currentTestPhase === 1) {
             firstUserMBTI = myMBTI;
         } else if (currentTestPhase === 2) {
@@ -717,91 +772,25 @@
         renderMyResult();
     }
 
-    // 7. 가정생활 관점의 16가지 MBTI 상세 데이터 
     const mbtiDetails = {
-        "ESTJ": {
-            desc: "책임감이 강하고 체계적으로 가정을 이끄는",
-            pros: ["안정적이고 규칙적인 생활 환경 조성", "현실적인 문제 해결 능력 탁월", "가계 재무 관리에 철저함"],
-            cons: ["자신의 방식을 배우자에게 강요할 수 있음", "공감보다 해결책을 먼저 제시해 서운함을 줌", "갑작스러운 계획 변경에 예민함"]
-        },
-        "ESFJ": {
-            desc: "다정하고 헌신적이며 가족의 화목함을 최우선하는",
-            pros: ["배우자의 감정을 잘 살피고 전폭적인 지지", "기념일이나 가족 행사를 꼼꼼히 챙김", "따뜻하고 화목한 분위기 주도"],
-            cons: ["자신의 노력에 대한 보상이나 인정이 없으면 크게 서운해함", "타인의 시선에 예민해 스트레스를 잘 받음", "객관적인 비판을 감정적으로 받아들임"]
-        },
-        "ENTJ": {
-            desc: "리더십 있고 미래지향적으로 가정을 발전시키는",
-            pros: ["가족의 장기적인 비전과 목표 설정에 탁월함", "효율적으로 집안 대소사를 처리함", "배우자의 자기계발을 적극 지원"],
-            cons: ["지나치게 통제하려 들거나 지시하는 말투 사용", "성과 위주로 생각하여 감정적 교감이 부족할 수 있음", "휴식 시간에도 생산성을 따져 피곤하게 함"]
-        },
-        "ENFJ": {
-            desc: "공감 능력이 뛰어나고 배우자의 성장을 돕는",
-            pros: ["배우자의 감정을 깊이 이해하고 화목한 환경 조성", "갈등을 평화롭게 중재하는 탁월한 능력", "배우자의 잠재력을 믿고 지지해 줌"],
-            cons: ["배우자의 문제에 지나치게 개입하여 피로감 유발", "이상향이 높아 현실적인 문제(돈, 집안일)를 등한시할 수 있음", "비판에 매우 크게 상처받음"]
-        },
-        "ESTP": {
-            desc: "활동적이고 유쾌하여 지루할 틈 없는 일상을 만드는",
-            pros: ["에너지 넘치고 센스 있는 분위기 메이커", "위기 상황에 임기응변이 뛰어나고 유연함", "함께 즐기는 활동적인 데이트를 잘 리드함"],
-            cons: ["장기적인 계획이나 저축, 가계부 관리에 약함", "규칙이나 잔소리로 구속받는 것을 매우 싫어함", "반복되는 세세한 집안일을 귀찮아함"]
-        },
-        "ESFP": {
-            desc: "사교적이고 낙천적이라 집안에 항상 웃음꽃을 피우는",
-            pros: ["애정 표현이 풍부하고 다정함", "가족 행사를 즐겁고 화려하게 만듦", "긍정적인 에너지로 배우자의 스트레스 해소"],
-            cons: ["충동적인 소비 성향이 있어 경제 관리가 필요함", "진지하고 무거운 대화나 갈등 상황을 회피하려 함", "체계적인 가사 노동이나 계획 실행에 취약함"]
-        },
-        "ENTP": {
-            desc: "독창적이고 논리적이며 끊임없이 대화 주제를 던지는",
-            pros: ["새로운 시도와 흥미로운 대화로 활기찬 가정", "문제 발생 시 창의적이고 참신한 해결책 제시", "유연하고 열린 사고방식으로 편견이 없음"],
-            cons: ["일상적인 반복 업무(청소, 빨래 등)에 금방 싫증을 냄", "끝없는 논쟁과 토론으로 배우자를 지치게 할 수 있음", "무계획적인 행동으로 불안감을 줌"]
-        },
-        "ENFP": {
-            desc: "열정적이고 창의적이라 깜짝 이벤트와 로맨스를 즐기는",
-            pros: ["무한한 애정과 로맨틱한 이벤트로 감동을 줌", "아이처럼 순수하고 긍정적인 에너지를 전파", "배우자의 개성과 가능성을 전폭적으로 응원함"],
-            cons: ["감정 기복이 심해 배우자가 맞추기 어려울 수 있음", "마무리가 약해 벌려놓은 일을 배우자가 수습하기도 함", "경제 관념이 다소 느슨하고 즉흥적임"]
-        },
-        "ISTJ": {
-            desc: "신중하고 믿음직스러워 변함없는 신뢰와 안정을 주는",
-            pros: ["한결같은 성실함으로 가정에 깊은 안정감 부여", "책임감이 강해 맡은 바(집안일, 재정)를 완벽히 수행", "전통과 가족의 가치를 존중하고 지킴"],
-            cons: ["감정 표현에 서툴러 다소 무뚝뚝해 보일 수 있음", "새로운 방식이나 변화를 수용하는 데 시간이 걸림", "배우자의 즉흥적인 제안을 이해하지 못함"]
-        },
-        "ISFJ": {
-            desc: "따뜻하고 배려심이 깊어 배우자의 세세한 부분까지 챙기는",
-            pros: ["헌신적이고 세심하게 배우자의 필요를 충족시킴", "편안하고 아늑한 가정환경 유지에 탁월함", "갈등을 피하고 평화롭고 안정적인 관계 지향"],
-            cons: ["자신의 힘든 감정을 속으로만 삭이다가 폭발할 수 있음", "서운함을 직접 말하지 않고 배우자가 알아주길 바람", "보수적인 성향으로 급격한 변화에 스트레스를 받음"]
-        },
-        "INTJ": {
-            desc: "독립적이고 통찰력 있어 합리적이고 깊이 있는 관계를 맺는",
-            pros: ["논리적이고 효율적으로 가정의 목표와 경제를 관리함", "배우자와 깊이 있고 지적인 대화 가능", "매우 독립적이라 서로의 사생활과 공간을 잘 존중함"],
-            cons: ["공감 능력이 부족하여 때론 냉정하다는 오해를 받음", "자신의 논리가 무조건 맞다고 고집을 부릴 수 있음", "애정 표현이나 빈말에 매우 인색함"]
-        },
-        "INFJ": {
-            desc: "섬세하고 이상적이라 깊은 정신적 교감을 중요하게 생각하는",
-            pros: ["배우자의 숨겨진 감정까지 파악하는 깊은 통찰력", "가정의 조화와 의미 있는 관계 형성에 헌신적임", "도덕적이고 올바른 방향으로 부부 관계를 리드함"],
-            cons: ["완벽주의 성향으로 자신과 배우자를 피곤하게 할 수 있음", "크게 상처받으면 동굴로 들어가 대화를 단절해버림", "현실적인 문제(돈, 가사)를 다루는 데 스트레스를 받음"]
-        },
-        "ISTP": {
-            desc: "논리적이고 적응력이 뛰어나 실용적으로 문제를 해결하는",
-            pros: ["집안의 고장 난 물건이나 현실적 문제를 뚝딱 해결함", "배우자에게 집착하지 않고 독립적인 시간을 존중함", "상황에 맞게 유연하고 융통성 있게 대처함"],
-            cons: ["무심하고 감정 표현이 부족해 배우자를 외롭게 할 수 있음", "혼자만의 시간이 과하게 필요하여 단절감을 줌", "계획적이고 통제되는 생활을 매우 답답해함"]
-        },
-        "ISFP": {
-            desc: "온화하고 수용적이라 배우자를 있는 그대로 존중하고 사랑하는",
-            pros: ["배우자의 있는 그대로의 모습을 수용하고 비판하지 않음", "부드럽고 다정한 성품으로 가정에 편안함 제공", "소소한 일상의 아름다움과 여유를 잘 즐김"],
-            cons: ["갈등을 극도로 회피하여 오히려 문제를 키울 수 있음", "자기주장이 약해 속마음을 제대로 알기 어려움", "미래지향적인 장기 계획 수립에 소극적임"]
-        },
-        "INTP": {
-            desc: "분석적이고 지적이라 조용하지만 흥미로운 통찰을 나누는",
-            pros: ["조용하고 간섭하지 않아 배우자에게 충분한 자유를 줌", "유연한 사고로 틀에 박히지 않은 합리적 해결책 제시", "감정적으로 크게 휘둘리지 않고 평정심을 잘 유지함"],
-            cons: ["가사 노동이나 현실적인 집안 대소사에 무관심할 수 있음", "감정적인 위로보다는 사실 기반의 분석을 시도해 서운함을 줌", "혼자만의 생각에 빠져 방관자처럼 보일 때가 있음"]
-        },
-        "INFP": {
-            desc: "낭만적이고 진정성 있어 배우자의 감정에 깊이 공감하는",
-            pros: ["조건 없는 사랑과 깊은 정서적 교감을 나눔", "진정성 있고 로맨틱한 분위기 형성에 탁월함", "배우자의 독특한 개성을 가장 잘 이해하고 지지해 줌"],
-            cons: ["현실 감각이 부족해 경제, 가사 관리에 소홀할 수 있음", "감정 기복이 크고 예민하여 배우자가 달래기 어려울 수 있음", "이상적인 부부상에 현실을 맞추려다 실망하기도 함"]
-        }
+        "ESTJ": { desc: "책임감이 강하고 체계적으로 가정을 이끄는", pros: ["안정적이고 규칙적인 생활 환경 조성", "현실적인 문제 해결 능력 탁월", "가계 재무 관리에 철저함"], cons: ["자신의 방식을 배우자에게 강요할 수 있음", "공감보다 해결책을 먼저 제시해 서운함을 줌", "갑작스러운 계획 변경에 예민함"] },
+        "ESFJ": { desc: "다정하고 헌신적이며 가족의 화목함을 최우선하는", pros: ["배우자의 감정을 잘 살피고 전폭적인 지지", "기념일이나 가족 행사를 꼼꼼히 챙김", "따뜻하고 화목한 분위기 주도"], cons: ["자신의 노력에 대한 보상이나 인정이 없으면 크게 서운해함", "타인의 시선에 예민해 스트레스를 잘 받음", "객관적인 비판을 감정적으로 받아들임"] },
+        "ENTJ": { desc: "리더십 있고 미래지향적으로 가정을 발전시키는", pros: ["가족의 장기적인 비전과 목표 설정에 탁월함", "효율적으로 집안 대소사를 처리함", "배우자의 자기계발을 적극 지원"], cons: ["지나치게 통제하려 들거나 지시하는 말투 사용", "성과 위주로 생각하여 감정적 교감이 부족할 수 있음", "휴식 시간에도 생산성을 따져 피곤하게 함"] },
+        "ENFJ": { desc: "공감 능력이 뛰어나고 배우자의 성장을 돕는", pros: ["배우자의 감정을 깊이 이해하고 화목한 환경 조성", "갈등을 평화롭게 중재하는 탁월한 능력", "배우자의 잠재력을 믿고 지지해 줌"], cons: ["배우자의 문제에 지나치게 개입하여 피로감 유발", "이상향이 높아 현실적인 문제(돈, 집안일)를 등한시할 수 있음", "비판에 매우 크게 상처받음"] },
+        "ESTP": { desc: "활동적이고 유쾌하여 지루할 틈 없는 일상을 만드는", pros: ["에너지 넘치고 센스 있는 분위기 메이커", "위기 상황에 임기응변이 뛰어나고 유연함", "함께 즐기는 활동적인 데이트를 잘 리드함"], cons: ["장기적인 계획이나 저축, 가계부 관리에 약함", "규칙이나 잔소리로 구속받는 것을 매우 싫어함", "반복되는 세세한 집안일을 귀찮아함"] },
+        "ESFP": { desc: "사교적이고 낙천적이라 집안에 항상 웃음꽃을 피우는", pros: ["애정 표현이 풍부하고 다정함", "가족 행사를 즐겁고 화려하게 만듦", "긍정적인 에너지로 배우자의 스트레스 해소"], cons: ["충동적인 소비 성향이 있어 경제 관리가 필요함", "진지하고 무거운 대화나 갈등 상황을 회피하려 함", "체계적인 가사 노동이나 계획 실행에 취약함"] },
+        "ENTP": { desc: "독창적이고 논리적이며 끊임없이 대화 주제를 던지는", pros: ["새로운 시도와 흥미로운 대화로 활기찬 가정", "문제 발생 시 창의적이고 참신한 해결책 제시", "유연하고 열린 사고방식으로 편견이 없음"], cons: ["일상적인 반복 업무(청소, 빨래 등)에 금방 싫증을 냄", "끝없는 논쟁과 토론으로 배우자를 지치게 할 수 있음", "무계획적인 행동으로 불안감을 줌"] },
+        "ENFP": { desc: "열정적이고 창의적이라 깜짝 이벤트와 로맨스를 즐기는", pros: ["무한한 애정과 로맨틱한 이벤트로 감동을 줌", "아이처럼 순수하고 긍정적인 에너지를 전파", "배우자의 개성과 가능성을 전폭적으로 응원함"], cons: ["감정 기복이 심해 배우자가 맞추기 어려울 수 있음", "마무리가 약해 벌려놓은 일을 배우자가 수습하기도 함", "경제 관념이 다소 느슨하고 즉흥적임"] },
+        "ISTJ": { desc: "신중하고 믿음직스러워 변함없는 신뢰와 안정을 주는", pros: ["한결같은 성실함으로 가정에 깊은 안정감 부여", "책임감이 강해 맡은 바(집안일, 재정)를 완벽히 수행", "전통과 가족의 가치를 존중하고 지킴"], cons: ["감정 표현에 서툴러 다소 무뚝뚝해 보일 수 있음", "새로운 방식이나 변화를 수용하는 데 시간이 걸림", "배우자의 즉흥적인 제안을 이해하지 못함"] },
+        "ISFJ": { desc: "따뜻하고 배려심이 깊어 배우자의 세세한 부분까지 챙기는", pros: ["헌신적이고 세심하게 배우자의 필요를 충족시킴", "편안하고 아늑한 가정환경 유지에 탁월함", "갈등을 피하고 평화롭고 안정적인 관계 지향"], cons: ["자신의 힘든 감정을 속으로만 삭이다가 폭발할 수 있음", "서운함을 직접 말하지 않고 배우자가 알아주길 바람", "보수적인 성향으로 급격한 변화에 스트레스를 받음"] },
+        "INTJ": { desc: "독립적이고 통찰력 있어 합리적이고 깊이 있는 관계를 맺는", pros: ["논리적이고 효율적으로 가정의 목표와 경제를 관리함", "배우자와 깊이 있고 지적인 대화 가능", "매우 독립적이라 서로의 사생활과 공간을 잘 존중함"], cons: ["공감 능력이 부족하여 때론 냉정하다는 오해를 받음", "자신의 논리가 무조건 맞다고 고집을 부릴 수 있음", "애정 표현이나 빈말에 매우 인색함"] },
+        "INFJ": { desc: "섬세하고 이상적이라 깊은 정신적 교감을 중요하게 생각하는", pros: ["배우자의 숨겨진 감정까지 파악하는 깊은 통찰력", "가정의 조화와 의미 있는 관계 형성에 헌신적임", "도덕적이고 올바른 방향으로 부부 관계를 리드함"], cons: ["완벽주의 성향으로 자신과 배우자를 피곤하게 할 수 있음", "크게 상처받으면 동굴로 들어가 대화를 단절해버림", "현실적인 문제(돈, 가사)를 다루는 데 스트레스를 받음"] },
+        "ISTP": { desc: "논리적이고 적응력이 뛰어나 실용적으로 문제를 해결하는", pros: ["집안의 고장 난 물건이나 현실적 문제를 뚝딱 해결함", "배우자에게 집착하지 않고 독립적인 시간을 존중함", "상황에 맞게 유연하고 융통성 있게 대처함"], cons: ["무심하고 감정 표현이 부족해 배우자를 외롭게 할 수 있음", "혼자만의 시간이 과하게 필요하여 단절감을 줌", "계획적이고 통제되는 생활을 매우 답답해함"] },
+        "ISFP": { desc: "온화하고 수용적이라 배우자를 있는 그대로 존중하고 사랑하는", pros: ["배우자의 있는 그대로의 모습을 수용하고 비판하지 않음", "부드럽고 다정한 성품으로 가정에 편안함 제공", "소소한 일상의 아름다움과 여유를 잘 즐김"], cons: ["갈등을 극도로 회피하여 오히려 문제를 키울 수 있음", "자기주장이 약해 속마음을 제대로 알기 어려움", "미래지향적인 장기 계획 수립에 소극적임"] },
+        "INTP": { desc: "분석적이고 지적이라 조용하지만 흥미로운 통찰을 나누는", pros: ["조용하고 간섭하지 않아 배우자에게 충분한 자유를 줌", "유연한 사고로 틀에 박히지 않은 합리적 해결책 제시", "감정적으로 크게 휘둘리지 않고 평정심을 잘 유지함"], cons: ["가사 노동이나 현실적인 집안 대소사에 무관심할 수 있음", "감정적인 위로보다는 사실 기반의 분석을 시도해 서운함을 줌", "혼자만의 생각에 빠져 방관자처럼 보일 때가 있음"] },
+        "INFP": { desc: "낭만적이고 진정성 있어 배우자의 감정에 깊이 공감하는", pros: ["조건 없는 사랑과 깊은 정서적 교감을 나눔", "진정성 있고 로맨틱한 분위기 형성에 탁월함", "배우자의 독특한 개성을 가장 잘 이해하고 지지해 줌"], cons: ["현실 감각이 부족해 경제, 가사 관리에 소홀할 수 있음", "감정 기복이 크고 예민하여 배우자가 달래기 어려울 수 있음", "이상적인 부부상에 현실을 맞추려다 실망하기도 함"] }
     };
 
-    // 7.5 개인 결과 렌더링 함수 (분리 및 확장)
     function renderMyResult() {
         document.getElementById('my-mbti').innerText = myMBTI;
         
@@ -809,7 +798,6 @@
         let roleText = currentRole === 'husband' ? "남편" : currentRole === 'wife' ? "아내" : "배우자";
         document.getElementById('my-desc-main').innerText = `당신은 ${details.desc} ${roleText}입니다.`;
         
-        // 장점 리스트 주입
         const prosUl = document.getElementById('my-pros');
         prosUl.innerHTML = "";
         details.pros.forEach(pro => {
@@ -818,7 +806,6 @@
             prosUl.appendChild(li);
         });
 
-        // 단점 리스트 주입
         const consUl = document.getElementById('my-cons');
         consUl.innerHTML = "";
         details.cons.forEach(con => {
@@ -827,7 +814,6 @@
             consUl.appendChild(li);
         });
         
-        // 1단계(본인)인지 2단계(배우자)인지에 따라 하단 메뉴 변경
         if (currentTestPhase === 1) {
             document.getElementById('partner-input-section').style.display = 'block';
             document.getElementById('couple-mode-finish-section').style.display = 'none';
@@ -839,33 +825,24 @@
         showScreen('screen-my-result');
     }
 
-    // 7.8 배우자 테스트 이어하기 시작 함수 (신규 추가)
     function startPartnerTest() {
-        // 2단계 진입
         currentTestPhase = 2;
-        
-        // 역할 반전 (남편 -> 아내, 아내 -> 남편)
         currentRole = (currentRole === 'husband') ? 'wife' : 'husband';
         activeQuestions = questionsData[currentRole];
         
-        // 알림창 띄우기
         const nextRoleName = currentRole === 'husband' ? '남편' : '아내';
         alert(`이제 ${nextRoleName}의 차례입니다! 폰을 넘겨주세요.`);
         
-        // 퀴즈 화면으로 이동하여 초기화된 상태로 시작
         startQuiz();
     }
 
-    // 8. 궁합 분석 및 조언 생성 (매운맛 버전 분리)
     function showCompatibility() {
         let finalPartnerMBTI = "";
         
-        // 2단계 커플 모드 완료 상태라면, 계산된 결과값을 가져옴
         if (currentTestPhase === 2) {
-            myMBTI = firstUserMBTI;          // 1번 주자의 MBTI
-            finalPartnerMBTI = secondUserMBTI; // 2번 주자의 MBTI
+            myMBTI = firstUserMBTI;          
+            finalPartnerMBTI = secondUserMBTI; 
         } else {
-            // 1단계에서 드롭다운으로 수동 선택한 경우
             finalPartnerMBTI = document.getElementById('partner-mbti').value;
             if (!finalPartnerMBTI) {
                 alert("배우자의 MBTI를 선택해 주세요!");
@@ -881,7 +858,6 @@
         let spicyHtml = "<h4 style='color:var(--danger-color); margin-top:0; font-size:1.2rem; border-bottom:1px solid rgba(255,71,87,0.2); padding-bottom:15px; margin-bottom:15px; display:flex; align-items:center; gap:8px;'><span>🔥</span> 마라맛 팩트 폭력</h4>";
         let doomHtml = "<h4 style='color:#FF6B81; margin-top:0; font-size:1.2rem; border-bottom:1px solid rgba(255,107,129,0.2); padding-bottom:10px; margin-bottom:10px; display:flex; align-items:center; gap:8px;'><span>☠️</span> 파국 / 멸망편</h4><p style='font-size:0.85rem; color:#A4B0BE; margin-bottom:15px;'>※ 최악의 시나리오입니다. 절대 진지하게 받아들이지 마세요.</p>";
 
-        // 1. 에너지 방향 (E/I) - 알파벳 순 정렬하여 조합 확인 (EE, II, EI)
         let eiCombo = [myMBTI[0], finalPartnerMBTI[0]].sort().join('');
         if (eiCombo === 'EI') {
             score += 10; 
@@ -900,7 +876,6 @@
             doomHtml += "<p><strong>[에너지 파국]</strong> 한 지붕 아래서 카톡으로만 대화하다가 인터넷 끊기면 서로 살았는지 죽었는지 생사도 모르는 <b>완벽한 고독사 엔딩</b>.</p>";
         }
 
-        // 2. 인식 방식 (S/N) - (NN, NS, SS)
         let snCombo = [myMBTI[1], finalPartnerMBTI[1]].sort().join('');
         if (snCombo === 'NS') {
             score += 5; 
@@ -919,7 +894,6 @@
             doomHtml += "<p><strong>[소통 파국]</strong> 둘이서 사이비 종교나 다단계에 나란히 빠져 전 재산 탕진하거나, 대책 없이 빚내서 세계여행 가다가 오지에서 <b>자연인 되는 엔딩</b>.</p>";
         }
 
-        // 3. 결정 방식 (T/F) - (FF, FT, TT)
         let tfCombo = [myMBTI[2], finalPartnerMBTI[2]].sort().join('');
         if (tfCombo === 'FT') {
             score -= 10; 
@@ -938,7 +912,6 @@
             doomHtml += "<p><strong>[감정 파국]</strong> 매일 밤 서로 '네가 나한테 어떻게 이래!' 울고불고 물건 던지며 싸우다가, 이웃집 층간소음 신고로 <b>경찰 출동하는 막장 드라마 엔딩</b>.</p>";
         }
 
-        // 4. 생활 양식 (J/P) - (JJ, JP, PP)
         let jpCombo = [myMBTI[3], finalPartnerMBTI[3]].sort().join('');
         if (jpCombo === 'JP') {
             score += 5; 
@@ -957,9 +930,8 @@
             doomHtml += "<p><strong>[생활 파국]</strong> 귀찮다고 세금, 공과금 안 내다가 전기, 가스 다 끊기고 집 경매 넘어가서 <b>길거리에 나앉아 박스 줍는 베짱이 엔딩</b>.</p>";
         }
 
-        score = Math.max(0, Math.min(score, 100));
+        score = Math.max(0, Math.min(score, 100)); // 100점 고정 로직 유지
 
-        // 총평
         let finalComment = "";
         if (score >= 90) { finalComment = "💖 천생연분! 더할 나위 없는 최고의 파트너입니다."; } 
         else if (score >= 70) { finalComment = "🤝 서로 조금만 배려하면 평생의 베스트 프렌드가 될 수 있어요."; } 
@@ -968,10 +940,8 @@
 
         normalHtml += `<div style='text-align:center; color:var(--text-main); font-size:1.05rem; font-weight:700; padding: 20px; background: rgba(255, 117, 140, 0.05); border-radius: 12px; margin-top: 25px;'>${finalComment}</div>`;
 
-        // DOM 업데이트
         document.getElementById('advice-text').innerHTML = normalHtml;
         
-        // 매운맛 컨테이너 생성
         document.getElementById('spicy-container').innerHTML = `
             <button class="spicy-toggle-btn" id="spicy-btn" onclick="toggleSpicy()">
                 ⚠️ [경고] 뼈 때리는 '매운맛' 팩폭 보기 (마상 주의)
@@ -981,7 +951,6 @@
             </div>
         `;
 
-        // 멸망편 컨테이너 생성 (신규)
         document.getElementById('doom-container').innerHTML = `
             <button class="doom-toggle-btn" id="doom-btn" onclick="toggleDoom()">
                 ☠️ [위험] 돌이킬 수 없는 '파국/멸망편' 보기 (절대주의)
@@ -995,7 +964,6 @@
         animateValue("score", 0, score, 1000);
     }
 
-    // 8.5 매운맛 아코디언 토글 함수 
     function toggleSpicy() {
         const content = document.getElementById('spicy-content');
         const btn = document.getElementById('spicy-btn');
@@ -1013,7 +981,6 @@
         }
     }
 
-    // 8.6 멸망편 아코디언 토글 함수 (신규 추가)
     function toggleDoom() {
         const content = document.getElementById('doom-content');
         const btn = document.getElementById('doom-btn');
@@ -1035,7 +1002,6 @@
         }
     }
 
-    // 9. 점수 애니메이션 함수
     function animateValue(id, start, end, duration) {
         let obj = document.getElementById(id);
         let startTimestamp = null;
@@ -1050,7 +1016,6 @@
         window.requestAnimationFrame(step);
     }
 
-    // 10. 빠른 결과 보기 처리 (개인 결과 페이지를 거치도록 수정)
     function submitDirectInput() {
         const me = document.getElementById('direct-my-mbti').value;
         const partner = document.getElementById('direct-partner-mbti').value;
@@ -1060,14 +1025,12 @@
             return;
         }
 
-        // 글로벌 변수 셋업 및 1단계 강제
         currentTestPhase = 1;
         firstUserMBTI = me;
         myMBTI = me;
         document.getElementById('partner-mbti').value = partner;
-        currentRole = "배우자"; // 빠른 결과 보기에서는 남/여 선택을 생략하므로 중립어 사용
+        currentRole = "배우자"; 
         
-        // 바로 궁합을 보여주지 않고, 상세화된 '내 결과 화면'을 먼저 보여줌
         renderMyResult();
     }
 
