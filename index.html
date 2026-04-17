@@ -1,4 +1,4 @@
-```html
+html
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -35,9 +35,9 @@
             margin: 0;
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* center에서 flex-start로 변경 */
+            align-items: flex-start;
             min-height: 100vh;
-            padding: 24px 0; /* 상하 여백 추가 */
+            padding: 24px 0;
             line-height: 1.6;
         }
 
@@ -606,13 +606,18 @@
         .label-me { font-weight: bold; color: var(--secondary-color); }
         .label-partner { font-weight: bold; color: var(--primary-color); margin-top: 10px; }
 
-        /* 모바일 최적화 미디어 쿼리 */
-        @media (max-width: 540px) {
-            body { padding: 0; }
+        /* ✅ 모바일 최적화 미디어 쿼리 (좌우 여백 꽉 차게 수정) */
+        @media (max-width: 600px) {
+            body { 
+                padding: 0; 
+                background: var(--card-bg); /* 모바일에서는 바디 배경을 앱 컨테이너와 동일하게 */
+            }
             .app-container {
                 border-radius: 0;
                 min-height: 100svh;
-                padding: 28px 18px;
+                padding: 28px 20px;
+                box-shadow: none; /* 그림자 제거로 완전히 평면적인 앱 느낌 */
+                max-width: 100%;  /* 너비 제한 해제 */
             }
         }
     </style>
@@ -1308,7 +1313,7 @@
         renderMyResult();
 
         const partnerDetails = MBTI_DETAILS[partner];
-        // span 태그가 날아가지 않도록 innerHTML로 설정
+        // 아코디언 버튼 내부 텍스트 및 span 태그를 안전하게 설정
         document.getElementById('partner-detail-toggle').innerHTML =
             `👫 배우자(<span id="partner-detail-mbti-label">${partner}</span>) 성향도 보기 ▼`;
             
@@ -1339,14 +1344,14 @@
     function togglePartnerDetail() {
         const content = document.getElementById('partner-detail-content');
         const btn     = document.getElementById('partner-detail-toggle');
-        // 기존 텍스트 보존을 위해 요소를 찾고 없으면 빈 문자열 할당 (에러 방지)
+        // 기존 span 태그를 안전하게 찾아서 텍스트만 추출
         const labelSpan = document.getElementById('partner-detail-mbti-label');
         const label   = labelSpan ? labelSpan.textContent : '';
         
         const isOpen  = content.classList.toggle('open');
         btn.classList.toggle('open');
         
-        // 버튼 텍스트 변경 시 내부 span 태그를 그대로 유지
+        // innerHTML을 사용해 span 태그 구조를 훼손하지 않고 텍스트만 교체
         btn.innerHTML = isOpen
             ? `👫 배우자(<span id="partner-detail-mbti-label">${label}</span>) 성향 닫기 ▲`
             : `👫 배우자(<span id="partner-detail-mbti-label">${label}</span>) 성향도 보기 ▼`;
@@ -1356,6 +1361,3 @@
 
 </body>
 </html>
-
-
-```
