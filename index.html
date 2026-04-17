@@ -5,18 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>우리 부부, 어떤 퍼즐일까? - 부부 심리 테스트</title>
     <!-- 웹 폰트 (Pretendard) 로드 -->
-    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
     <style>
         /* CSS: 세련된 디자인 및 레이아웃 설정 */
         :root {
-            --primary-color: #FF758C; /* 화사한 핑크 코랄 */
+            --primary-color: #FF758C;
             --primary-dark: #FF5A73;
-            --secondary-color: #4A4E69; /* 깊이있는 네이비 */
+            --secondary-color: #4A4E69;
             --bg-gradient: linear-gradient(135deg, #FFF0F5 0%, #F5E6E8 100%);
             --card-bg: rgba(255, 255, 255, 0.95);
             --text-main: #2D3436;
             --text-light: #636E72;
             --danger-color: #FF4757;
+            --border-color: #E9ECEF;
+            --border-radius: 16px;
+            --border-radius-lg: 30px;
+            --box-shadow: 0 4px 15px rgba(0,0,0,0.02);
         }
 
         * {
@@ -40,7 +44,7 @@
             width: 100%;
             max-width: 480px;
             min-height: 650px;
-            border-radius: 30px;
+            border-radius: var(--border-radius-lg);
             box-shadow: 0 20px 50px rgba(0,0,0,0.08), 0 2px 15px rgba(0,0,0,0.03);
             padding: 40px 30px;
             position: relative;
@@ -84,9 +88,10 @@
             animation: float 3s ease-in-out infinite;
         }
 
-        h1, h2, h3 {
+        h1, h2, h3, h4 {
             color: var(--secondary-color);
             text-align: center;
+            margin-top: 0;
             margin-bottom: 15px;
             line-height: 1.3;
         }
@@ -107,7 +112,7 @@
             color: white;
             border: none;
             padding: 16px 24px;
-            border-radius: 16px;
+            border-radius: var(--border-radius);
             font-size: 1.1rem;
             font-weight: 700;
             cursor: pointer;
@@ -137,7 +142,7 @@
         /* 진행률 바 */
         .progress-container {
             width: 100%;
-            background-color: #E9ECEF;
+            background-color: var(--border-color);
             border-radius: 20px;
             height: 10px;
             margin-bottom: 25px;
@@ -149,6 +154,13 @@
             border-radius: 20px;
             width: 0%;
             transition: width 0.5s ease-out;
+        }
+
+        .question-count-text {
+            text-align: center;
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-bottom: 10px;
         }
 
         .question-text {
@@ -180,8 +192,8 @@
             line-height: 1.4;
             height: auto;
             word-break: keep-all;
-            border-radius: 16px;
-            border: 2px solid #E9ECEF;
+            border-radius: var(--border-radius);
+            border: 2px solid var(--border-color);
             color: var(--text-main);
             background-color: #fff;
             transition: all 0.2s;
@@ -219,11 +231,129 @@
             padding: 25px;
             border-radius: 20px;
             margin-bottom: 20px;
-            border: 1px solid #E9ECEF;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--box-shadow);
+        }
+        .result-box-transparent {
+            padding: 0;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            margin-bottom: 20px;
         }
 
+        .result-desc-box {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: var(--box-shadow);
+            border: 1px solid var(--border-color);
+        }
+        .result-desc-text {
+            color: var(--text-main);
+            margin: 0;
+            font-weight: bold;
+            font-size: 1.1rem;
+            text-align: center;
+            line-height: 1.5;
+        }
+        .pros-cons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+        .pros-box {
+            background-color: #F3FBF5;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            text-align: left;
+            border: 1px solid #D3EADD;
+        }
+        .cons-box {
+            background-color: #FFF5F5;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            text-align: left;
+            border: 1px solid #FFE3E3;
+        }
+        .pros-title {
+            color: #20C997;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+        }
+        .cons-title {
+            color: #FF6B6B;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+        }
+        .pros-list { margin: 0; padding-left: 22px; color: #2B8A3E; font-size: 0.95rem; line-height: 1.7; }
+        .cons-list { margin: 0; padding-left: 22px; color: #C92A2A; font-size: 0.95rem; line-height: 1.7; }
+
+        .partner-input-title {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 1.15rem;
+            border-top: 2px dashed var(--border-color);
+            padding-top: 30px;
+        }
+        .partner-invite-box {
+            background: rgba(255, 117, 140, 0.05);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 117, 140, 0.2);
+        }
+        .partner-invite-text {
+            margin-bottom: 12px;
+            font-weight: bold;
+            color: var(--primary-dark);
+            font-size: 1.05rem;
+        }
+        .btn-invite {
+            background: linear-gradient(135deg, #FF9A9E, #FECFEF);
+            color: var(--secondary-color);
+        }
+        .partner-or-text {
+            text-align: center;
+            color: #ADB5BD;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        .partner-select-label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .couple-mode-section {
+            margin-top: 20px;
+        }
+        .hidden {
+            display: none !important;
+        }
+
+        .couple-finish-box {
+            background: rgba(74, 78, 105, 0.05);
+            padding: 25px 20px;
+            border-radius: var(--border-radius);
+            border: 1px dashed var(--secondary-color);
+            text-align: center;
+        }
+        .couple-finish-title { margin-top: 0; color: var(--secondary-color); font-size: 1.3rem; }
+        .couple-finish-desc { margin-bottom: 20px; color: var(--text-main); }
+
         select {
+            appearance: none;
             width: 100%;
             padding: 16px;
             border-radius: 14px;
@@ -233,6 +363,10 @@
             outline: none;
             font-family: inherit;
             background-color: #fff;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234A4E69' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 1em;
             transition: border-color 0.3s;
             cursor: pointer;
         }
@@ -255,6 +389,17 @@
             text-shadow: none;
         }
 
+        .compat-badge-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .compat-person { text-align: center; }
+        .compat-label { font-size: 0.85rem; color: #888; margin-bottom: 5px; font-weight: 600; }
+        .compat-cross { font-size: 1.5rem; color: #DEE2E6; font-weight: 300; }
+
         .advice-content {
             text-align: left;
             line-height: 1.7;
@@ -265,6 +410,46 @@
             background-color: rgba(255, 117, 140, 0.1);
             padding: 2px 6px;
             border-radius: 6px;
+        }
+        .advice-header {
+            margin-top: 0;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            font-size: 1.15rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .advice-normal-title {
+            color: var(--secondary-color);
+            border-bottom: 2px dashed var(--border-color);
+        }
+        .advice-spicy-title {
+            color: var(--danger-color);
+            font-size: 1.2rem;
+            border-bottom: 1px solid rgba(255, 71, 87, 0.2);
+        }
+        .advice-doom-title {
+            color: #FF6B81;
+            font-size: 1.2rem;
+            border-bottom: 1px solid rgba(255, 107, 129, 0.2);
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+        }
+        .doom-subtitle {
+            font-size: 0.85rem;
+            color: #A4B0BE;
+            margin-bottom: 15px;
+        }
+        .final-comment-box {
+            text-align: center;
+            color: var(--text-main);
+            font-size: 1.05rem;
+            font-weight: 700;
+            padding: 20px;
+            background: rgba(255, 117, 140, 0.05);
+            border-radius: 12px;
+            margin-top: 25px;
         }
 
         .mbti-badge {
@@ -278,13 +463,12 @@
         .mbti-badge.me { background-color: #F1F3F5; color: var(--secondary-color); }
         .mbti-badge.partner { background-color: rgba(255, 117, 140, 0.15); color: var(--primary-color); }
 
-        /* 매운맛 버튼 및 컨텐츠 스타일 */
-        .spicy-toggle-btn {
+        .btn-spicy {
             background: linear-gradient(135deg, #FF6B6B, #EE5253);
             color: white;
             border: none;
             padding: 16px;
-            border-radius: 16px;
+            border-radius: var(--border-radius);
             width: 100%;
             font-weight: 700;
             font-size: 1.05rem;
@@ -298,42 +482,15 @@
             justify-content: center;
             gap: 10px;
         }
-        .spicy-toggle-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(238, 82, 83, 0.4);
-        }
-        .spicy-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            background-color: #FFF5F5;
-            border-radius: 16px;
-            margin-top: 0;
-            padding: 0 20px; 
-            opacity: 0;
-            border-left: 0px solid var(--danger-color);
-        }
-        .spicy-content.open {
-            max-height: 1500px; 
-            padding: 25px 20px;
-            margin-bottom: 20px;
-            opacity: 1;
-            border-left: 5px solid var(--danger-color);
-            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.1);
-        }
-        .spicy-content p strong {
-            color: var(--danger-color);
-            background: transparent;
-            padding: 0;
-        }
+        .btn-spicy:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(238, 82, 83, 0.4); }
+        .btn-spicy.open { background: #A4B0BE; box-shadow: none; }
 
-        /* 멸망편 버튼 및 컨텐츠 스타일 */
-        .doom-toggle-btn {
+        .btn-doom {
             background: linear-gradient(135deg, #2F3542, #1E272E);
             color: #FF6B81;
             border: 1px solid #57606F;
             padding: 16px;
-            border-radius: 16px;
+            border-radius: var(--border-radius);
             width: 100%;
             font-weight: 700;
             font-size: 1.05rem;
@@ -347,37 +504,53 @@
             justify-content: center;
             gap: 10px;
         }
-        .doom-toggle-btn:hover {
-            background: #1E272E;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(30, 39, 46, 0.6);
-            border-color: #FF4757;
-        }
-        .doom-content {
+        .btn-doom:hover { background: #1E272E; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(30, 39, 46, 0.6); border-color: #FF4757; }
+        .btn-doom.open { background: #57606F; color: #ffffff; border-color: transparent; box-shadow: none; }
+
+        .accordion-content {
             max-height: 0;
             overflow: hidden;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            background-color: #2F3542;
-            color: #F1F2F6;
-            border-radius: 16px;
+            border-radius: var(--border-radius);
             margin-top: 0;
             padding: 0 20px; 
             opacity: 0;
-            border-left: 0px solid #FF4757;
         }
-        .doom-content.open {
-            max-height: 1500px;
+        .accordion-content.open {
+            max-height: 1500px; 
             padding: 25px 20px;
             margin-bottom: 20px;
             opacity: 1;
-            border-left: 5px solid #FF4757;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
-        .doom-content p strong {
-            color: #FF6B81;
-            background: transparent;
-        }
+        .accordion-spicy { background-color: #FFF5F5; border-left: 0px solid var(--danger-color); }
+        .accordion-spicy.open { border-left: 5px solid var(--danger-color); box-shadow: 0 4px 15px rgba(255, 71, 87, 0.1); }
+        .accordion-spicy p strong { color: var(--danger-color); background: transparent; padding: 0; }
+        
+        .accordion-doom { background-color: #2F3542; color: #F1F2F6; border-left: 0px solid #FF4757; }
+        .accordion-doom.open { border-left: 5px solid #FF4757; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); }
+        .accordion-doom p strong { color: #FF6B81; background: transparent; }
 
+        /* Utility Classes */
+        .spacer { flex-grow: 1; }
+        .mb-0 { margin-bottom: 0; }
+        .mt-auto { margin-top: auto; }
+        .btn-role { padding: 20px; font-size: 1.2rem; text-align: center; }
+        .emoji-icon-top { margin-top: 40px; }
+        .mb-sm { margin-bottom: 10px; }
+        .mb-md { margin-bottom: 30px; }
+        .mb-lg { margin-bottom: 40px; }
+        .label-me { font-weight: bold; color: var(--secondary-color); }
+        .label-partner { font-weight: bold; color: var(--primary-color); margin-top: 10px; }
+
+        /* 모바일 최적화 미디어 쿼리 */
+        @media (max-width: 540px) {
+            body { padding: 0; }
+            .app-container {
+                border-radius: 0;
+                min-height: 100svh;
+                padding: 28px 18px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -389,7 +562,7 @@
         <div class="emoji-icon">🧩</div>
         <h1>우리 부부,<br>어떤 퍼즐일까?</h1>
         <p>12개의 디테일한 질문을 통해 나의 부부관계 유형을 알아보고,<br>배우자와의 상호 보완적인 궁합을 분석해 보세요.</p>
-        <div style="flex-grow: 1;"></div>
+        <div class="spacer"></div>
         <button class="btn" onclick="showScreen('screen-role')">테스트 시작하기</button>
         <button class="btn btn-outline" onclick="showScreen('screen-direct-input')">💡 이미 MBTI를 안다면? 결과 바로보기</button>
         <p class="disclaimer">
@@ -401,48 +574,32 @@
     <!-- 1.2 빠른 결과 보기 화면 -->
     <div id="screen-direct-input" class="screen">
         <div class="emoji-icon">💡</div>
-        <h2 style="margin-bottom: 10px;">MBTI 빠른 결과 보기</h2>
-        <p style="margin-bottom: 30px;">나와 배우자의 MBTI를 이미 알고 계시군요!<br>선택 후 바로 궁합을 확인해 보세요.</p>
+        <h2 class="mb-sm">MBTI 빠른 결과 보기</h2>
+        <p class="mb-md">나와 배우자의 MBTI를 이미 알고 계시군요!<br>선택 후 바로 궁합을 확인해 보세요.</p>
         
-        <p style="margin-bottom: 5px; font-size: 0.95rem; text-align: left; font-weight: bold; color: var(--secondary-color);">나의 MBTI</p>
+        <label class="partner-select-label label-me" for="direct-my-mbti">나의 MBTI</label>
         <select id="direct-my-mbti">
             <option value="" disabled selected>나의 MBTI 선택</option>
-            <option value="ESTJ">ESTJ</option><option value="ESTP">ESTP</option>
-            <option value="ESFJ">ESFJ</option><option value="ESFP">ESFP</option>
-            <option value="ENTJ">ENTJ</option><option value="ENTP">ENTP</option>
-            <option value="ENFJ">ENFJ</option><option value="ENFP">ENFP</option>
-            <option value="ISTJ">ISTJ</option><option value="ISTP">ISTP</option>
-            <option value="ISFJ">ISFJ</option><option value="ISFP">ISFP</option>
-            <option value="INTJ">INTJ</option><option value="INTP">INTP</option>
-            <option value="INFJ">INFJ</option><option value="INFP">INFP</option>
         </select>
         
-        <p style="margin-bottom: 5px; font-size: 0.95rem; text-align: left; font-weight: bold; color: var(--primary-color); margin-top: 10px;">배우자의 MBTI</p>
+        <label class="partner-select-label label-partner" for="direct-partner-mbti">배우자의 MBTI</label>
         <select id="direct-partner-mbti">
             <option value="" disabled selected>배우자의 MBTI 선택</option>
-            <option value="ESTJ">ESTJ</option><option value="ESTP">ESTP</option>
-            <option value="ESFJ">ESFJ</option><option value="ESFP">ESFP</option>
-            <option value="ENTJ">ENTJ</option><option value="ENTP">ENTP</option>
-            <option value="ENFJ">ENFJ</option><option value="ENFP">ENFP</option>
-            <option value="ISTJ">ISTJ</option><option value="ISTP">ISTP</option>
-            <option value="ISFJ">ISFJ</option><option value="ISFP">ISFP</option>
-            <option value="INTJ">INTJ</option><option value="INTP">INTP</option>
-            <option value="INFJ">INFJ</option><option value="INFP">INFP</option>
         </select>
         
-        <div style="flex-grow: 1;"></div>
+        <div class="spacer"></div>
         <button class="btn" onclick="submitDirectInput()">궁합 및 전문가 조언 보기</button>
         <button class="btn btn-outline" onclick="showScreen('screen-intro')">처음으로 돌아가기</button>
     </div>
 
     <!-- 1.5 역할 선택 화면 -->
     <div id="screen-role" class="screen">
-        <div class="emoji-icon" style="margin-top: 40px;">👫</div>
+        <div class="emoji-icon emoji-icon-top">👫</div>
         <h2>당신의 역할은 무엇인가요?</h2>
-        <p style="margin-bottom: 40px;">선택하신 역할에 맞춰<br>더 현실적이고 디테일한 상황이 제시됩니다.</p>
+        <p class="mb-lg">선택하신 역할에 맞춰<br>더 현실적이고 디테일한 상황이 제시됩니다.</p>
         
-        <button class="btn btn-outline" style="padding: 20px; font-size: 1.2rem; text-align: center;" onclick="selectRole('husband')">나는 남편입니다 🙋‍♂️</button>
-        <button class="btn btn-outline" style="padding: 20px; font-size: 1.2rem; text-align: center;" onclick="selectRole('wife')">나는 아내입니다 🙋‍♀️</button>
+        <button class="btn btn-outline btn-role" onclick="selectRole('husband')">나는 남편입니다 🙋‍♂️</button>
+        <button class="btn btn-outline btn-role" onclick="selectRole('wife')">나는 아내입니다 🙋‍♀️</button>
     </div>
 
     <!-- 2. 테스트 화면 -->
@@ -450,7 +607,7 @@
         <div class="progress-container">
             <div id="progress-bar" class="progress-bar"></div>
         </div>
-        <div id="question-count" style="text-align: center; color: var(--primary-color); font-weight: bold; margin-bottom: 10px;">1 / 12</div>
+        <div id="question-count" class="question-count-text">1 / 12</div>
         <div id="question-text" class="question-text">질문이 여기에 표시됩니다.</div>
         
         <div id="answer-buttons">
@@ -464,57 +621,49 @@
     <!-- 3. 내 결과 확인 & 배우자 입력 화면 -->
     <div id="screen-my-result" class="screen">
         <h2>나의 가정생활 성향은?</h2>
-        <div class="result-mbti" id="my-mbti">ESTJ</div>
+        <div class="result-mbti" id="my-mbti"></div>
         
-        <div class="result-box" style="padding: 0; background: transparent; border: none; box-shadow: none;">
-            <div style="background: white; border-radius: 20px; padding: 20px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); border: 1px solid #E9ECEF;">
-                <p id="my-desc-main" style="color: var(--text-main); margin:0; font-weight: bold; font-size: 1.1rem; text-align: center; line-height: 1.5;"></p>
+        <div class="result-box-transparent">
+            <div class="result-desc-box">
+                <p id="my-desc-main" class="result-desc-text"></p>
             </div>
             
-            <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px;">
-                <div style="background-color: #F3FBF5; border-radius: 16px; padding: 20px; text-align: left; border: 1px solid #D3EADD;">
-                    <h4 style="margin: 0 0 12px 0; color: #20C997; display: flex; align-items: center; gap: 6px; font-size: 1.1rem;"><span>👍</span> 가정생활 속 장점</h4>
-                    <ul id="my-pros" style="margin: 0; padding-left: 22px; color: #2B8A3E; font-size: 0.95rem; line-height: 1.7;"></ul>
+            <div class="pros-cons-container">
+                <div class="pros-box">
+                    <h4 class="pros-title"><span>👍</span> 가정생활 속 장점</h4>
+                    <ul id="my-pros" class="pros-list"></ul>
                 </div>
-                <div style="background-color: #FFF5F5; border-radius: 16px; padding: 20px; text-align: left; border: 1px solid #FFE3E3;">
-                    <h4 style="margin: 0 0 12px 0; color: #FF6B6B; display: flex; align-items: center; gap: 6px; font-size: 1.1rem;"><span>⚠️</span> 현실적인 단점 / 주의점</h4>
-                    <ul id="my-cons" style="margin: 0; padding-left: 22px; color: #C92A2A; font-size: 0.95rem; line-height: 1.7;"></ul>
+                <div class="cons-box">
+                    <h4 class="cons-title"><span>⚠️</span> 현실적인 단점 / 주의점</h4>
+                    <ul id="my-cons" class="cons-list"></ul>
                 </div>
             </div>
         </div>
         
         <!-- 1단계: 파트너 입력 영역 -->
         <div id="partner-input-section">
-            <h3 style="text-align: center; margin-top: 10px; font-size: 1.15rem; border-top: 2px dashed #E9ECEF; padding-top: 30px;">우리 부부의 궁합은 어떨까요?</h3>
+            <h3 class="partner-input-title">우리 부부의 궁합은 어떨까요?</h3>
             
-            <div style="background: rgba(255, 117, 140, 0.05); padding: 20px; border-radius: 16px; margin-bottom: 25px; border: 1px solid rgba(255, 117, 140, 0.2);">
-                <p style="margin-bottom: 12px; font-weight: bold; color: var(--primary-dark); font-size: 1.05rem;">배우자도 지금 바로 테스트해 볼까요?</p>
-                <button class="btn" style="margin-bottom: 0; background: linear-gradient(135deg, #FF9A9E, #FECFEF); color: var(--secondary-color);" onclick="startPartnerTest()">📲 배우자에게 폰 넘겨주기 (테스트 시작)</button>
+            <div class="partner-invite-box">
+                <p class="partner-invite-text">배우자도 지금 바로 테스트해 볼까요?</p>
+                <button class="btn btn-invite mb-0" onclick="startPartnerTest()">📲 배우자에게 폰 넘겨주기 (테스트 시작)</button>
             </div>
 
-            <p style="text-align: center; color: #ADB5BD; font-size: 0.9rem; font-weight: bold; margin-bottom: 20px;">--- OR ---</p>
+            <p class="partner-or-text">--- OR ---</p>
 
-            <p style="margin-bottom: 10px; font-size: 0.9rem;">배우자의 MBTI를 이미 안다면 선택해 주세요.</p>
+            <label class="partner-select-label" for="partner-mbti">배우자의 MBTI를 이미 안다면 선택해 주세요.</label>
             <select id="partner-mbti">
                 <option value="" disabled selected>배우자의 MBTI 선택</option>
-                <option value="ESTJ">ESTJ</option><option value="ESTP">ESTP</option>
-                <option value="ESFJ">ESFJ</option><option value="ESFP">ESFP</option>
-                <option value="ENTJ">ENTJ</option><option value="ENTP">ENTP</option>
-                <option value="ENFJ">ENFJ</option><option value="ENFP">ENFP</option>
-                <option value="ISTJ">ISTJ</option><option value="ISTP">ISTP</option>
-                <option value="ISFJ">ISFJ</option><option value="ISFP">ISFP</option>
-                <option value="INTJ">INTJ</option><option value="INTP">INTP</option>
-                <option value="INFJ">INFJ</option><option value="INFP">INFP</option>
             </select>
             <button class="btn btn-outline" onclick="showCompatibility()">궁합 및 전문가 조언 보기</button>
         </div>
 
         <!-- 2단계: 두 번째 사람까지 완료 후 나오는 영역 -->
-        <div id="couple-mode-finish-section" style="display: none; margin-top: 20px;">
-            <div style="background: rgba(74, 78, 105, 0.05); padding: 25px 20px; border-radius: 16px; border: 1px dashed var(--secondary-color); text-align: center;">
-                <h3 style="margin-top: 0; color: var(--secondary-color); font-size: 1.3rem;">🎉 두 분의 테스트가 완료되었습니다!</h3>
-                <p style="margin-bottom: 20px; color: var(--text-main);">과연 우리 부부의 궁합 점수는 몇 점일까요?</p>
-                <button class="btn" style="margin-bottom: 0;" onclick="showCompatibility()">💞 최종 궁합 결과 보기</button>
+        <div id="couple-mode-finish-section" class="couple-mode-section hidden">
+            <div class="couple-finish-box">
+                <h3 class="couple-finish-title">🎉 두 분의 테스트가 완료되었습니다!</h3>
+                <p class="couple-finish-desc">과연 우리 부부의 궁합 점수는 몇 점일까요?</p>
+                <button class="btn mb-0" onclick="showCompatibility()">💞 최종 궁합 결과 보기</button>
             </div>
         </div>
     </div>
@@ -523,14 +672,14 @@
     <div id="screen-compatibility" class="screen">
         <h2>부부 궁합 분석 결과</h2>
         
-        <div style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 20px;">
-            <div style="text-align: center;">
-                <div style="font-size: 0.85rem; color: #888; margin-bottom: 5px; font-weight: 600;">나</div>
+        <div class="compat-badge-wrapper">
+            <div class="compat-person">
+                <div class="compat-label">나</div>
                 <div id="final-my-mbti" class="mbti-badge me"></div>
             </div>
-            <div style="font-size: 1.5rem; color: #DEE2E6; font-weight: 300;">✖</div>
-            <div style="text-align: center;">
-                <div style="font-size: 0.85rem; color: #888; margin-bottom: 5px; font-weight: 600;">배우자</div>
+            <div class="compat-cross">✖</div>
+            <div class="compat-person">
+                <div class="compat-label">배우자</div>
                 <div id="final-partner-mbti" class="mbti-badge partner"></div>
             </div>
         </div>
@@ -538,17 +687,134 @@
         <div class="score-display"><span id="score">0</span><span>점</span></div>
         
         <div class="result-box advice-content" id="advice-text"></div>
-        <div id="spicy-container"></div>
-        <div id="doom-container"></div>
         
-        <button class="btn btn-outline" style="margin-top: auto;" onclick="location.reload()">테스트 다시하기</button>
+        <!-- 아코디언 컴포넌트 -->
+        <button class="btn-spicy" id="acc-btn-spicy" onclick="toggleAccordion('spicy')">
+            ⚠️ [경고] 뼈 때리는 '매운맛' 팩폭 보기 (마상 주의)
+        </button>
+        <div id="acc-content-spicy" class="accordion-content accordion-spicy advice-content"></div>
+        
+        <button class="btn-doom" id="acc-btn-doom" onclick="toggleAccordion('doom')">
+            ☠️ [위험] 돌이킬 수 없는 '파국/멸망편' 보기 (절대주의)
+        </button>
+        <div id="acc-content-doom" class="accordion-content accordion-doom advice-content"></div>
+        
+        <button class="btn btn-outline mt-auto" onclick="location.reload()">테스트 다시하기</button>
     </div>
 
 </div>
 
 <script>
-    /* JavaScript: 앱의 동작 로직과 데이터 */
-    const questionsData = {
+    /* -------------------------------------------------------------------------
+     * DATA 영역
+     * ------------------------------------------------------------------------- */
+    const COMPAT_DATA = {
+        EI: {
+            EE: {
+                score: 20,
+                normal: "<p><strong>[에너지 충전]</strong> 두 분 모두 에너지를 쓰는 방식(E)이 같아 주말을 보내는 호흡이 아주 잘 맞습니다. 함께 취미를 즐기며 시너지를 내보세요.</p>",
+                spicy: "<p><strong>[에너지]</strong> 집안에 고요함이란 없습니다. 서로 밖에서 사람 만나고 노느라 바빠서 집은 그저 잠만 자는 하숙집 전락 위기입니다. 한 달 카드값의 절반이 식비와 모임 회비로 나가는 걸 보고도 정신 못 차리면 곧 파산입니다.</p>",
+                doom: "<p><strong>[에너지 파국]</strong> 서로 밖으로만 돌다가 집안은 쓰레기장 되고, 인맥 관리한답시고 카드 빚 돌려막기하다 <b>쌍방 파산 및 야반도주 엔딩</b>.</p>"
+            },
+            EI: {
+                score: 10,
+                normal: "<p><strong>[에너지 충전]</strong> 외향형(E)과 내향형(I)의 만남입니다. 서로의 부족한 에너지를 채워주지만 휴식 방식이 달라 서운할 수 있습니다. 외출을 좋아하는 E와 집콕을 좋아하는 I가 <b>'따로 또 같이'</b> 휴식하는 지혜가 필요합니다.</p>",
+                spicy: "<p><strong>[에너지]</strong> E는 주말마다 기어나가려 하고, I는 소파와 물아일체 되려 합니다. E가 I를 억지로 끌고 나가면 I는 썩은 표정으로 분위기 망치고, E가 혼자 나가 놀면 I는 버림받았다고 청승 떱니다. 완벽한 딜레마네요. 제발 각자도생하세요.</p>",
+                doom: "<p><strong>[에너지 파국]</strong> E는 매일 밤 파티하느라 집에 안 들어오고, I는 집에서 곰팡이와 대화하며 혼자 늙어가는 철저한 <b>쇼윈도 부부 엔딩</b>.</p>"
+            },
+            II: {
+                score: 20,
+                normal: "<p><strong>[에너지 충전]</strong> 두 분 모두 에너지를 쓰는 방식(I)이 같아 주말을 보내는 호흡이 아주 잘 맞습니다. 함께 취미를 즐기며 시너지를 내보세요.</p>",
+                spicy: "<p><strong>[에너지]</strong> 집에만 박혀 있어서 세상 돌아가는 걸 모릅니다. 주말 내내 한 마디도 안 하고 각자 스마트폰만 볼 거면 룸메이트랑 다를 게 뭡니까? 광합성 부족입니다. 가끔은 햇빛 좀 보고 사세요. 둘 다 우울증 옵니다.</p>",
+                doom: "<p><strong>[에너지 파국]</strong> 한 지붕 아래서 카톡으로만 대화하다가 인터넷 끊기면 서로 살았는지 죽었는지 생사도 모르는 <b>완벽한 고독사 엔딩</b>.</p>"
+            }
+        },
+        SN: {
+            NS: {
+                score: 5,
+                normal: "<p><strong>[대화와 소통]</strong> 현실적인 S와 이상적인 N의 만남입니다. 대화 핀트가 엇갈릴 수 있지만, <b>S의 실행력과 N의 상상력이 합쳐지면 완벽한 팀워크</b>가 됩니다.</p>",
+                spicy: "<p><strong>[소통]</strong> S에게 N의 말은 '뜬구름 잡는 헛소리'고, N에게 S는 '낭만이라곤 1도 없는 로봇'입니다. N이 신나서 상상력 펼칠 때 S가 팩트로 후려치면 N은 마음의 문을 닫습니다. 서로 외계어를 쓴다고 생각하고 통역기를 돌리세요.</p>",
+                doom: "<p><strong>[소통 파국]</strong> N이 말도 안 되는 코인/주식/사업에 전 재산 꼴아박고, S가 뒤도 안 돌아보고 이혼 서류에 도장 찍고 떠나는 <b>적자생존 엔딩</b>.</p>"
+            },
+            NN: {
+                score: 20,
+                normal: "<p><strong>[대화와 소통]</strong> 세상을 바라보는 관점(N)이 비슷해 말이 잘 통합니다. 서로의 생각에 쉽게 공감할 수 있는 든든한 대화 상대입니다.</p>",
+                spicy: "<p><strong>[소통]</strong> 둘 다 현실 감각이 제로입니다. 뜬구름 잡는 미래 계획만 세우다가 당장 내일 먹을 쌀통 비어있는 건 모릅니다. 둘 중 한 명이라도 통장 잔고를 확인하지 않으면 나중에 산속에 들어가서 텐트 치고 살아야 할 겁니다.</p>",
+                doom: "<p><strong>[소통 파국]</strong> 둘이서 사이비 종교나 다단계에 나란히 빠져 전 재산 탕진하거나, 대책 없이 빚내서 세계여행 가다가 오지에서 <b>자연인 되는 엔딩</b>.</p>"
+            },
+            SS: {
+                score: 20,
+                normal: "<p><strong>[대화와 소통]</strong> 세상을 바라보는 관점(S)이 비슷해 말이 잘 통합니다. 서로의 생각에 쉽게 공감할 수 있는 든든한 대화 상대입니다.</p>",
+                spicy: "<p><strong>[소통]</strong> 현실적이다 못해 팍팍합니다. 기념일에도 가성비 따지다 분위기 다 망칩니다. '사랑해'라는 말보다 '이번 달 관리비 얼마 나왔어?'가 더 자연스러운, 낭만이라곤 1도 없는 비즈니스 파트너 관계입니다.</p>",
+                doom: "<p><strong>[소통 파국]</strong> 생활비 10원 단위까지 엑셀로 따지며 숨 막히게 살다가, 돈 때문에 정 떨어져서 재산분할 소송 걸고 남보다 못한 사이가 되는 <b>비즈니스 파탄 엔딩</b>.</p>"
+            }
+        },
+        TF: {
+            FT: {
+                score: -10,
+                normal: "<p><strong>[위기 대처와 감정]</strong> 논리적인 T와 감정적인 F입니다. 갈등 시 상처받기 쉬우니, <b>T는 해결책 제시 전 '공감'을 연습</b>하고, <b>F는 T의 사실 폭격을 '나를 돕기 위한 애정'으로 해석</b>해 보세요.</p>",
+                spicy: "<p><strong>[감정] ⚠️ 최대 위기:</strong> 창과 방패의 대결입니다. F가 공감해 달라고 징징대면 T는 '그래서 결론이 뭔데?'라며 명치를 세게 때립니다. F는 T를 피도 눈물도 없다고 욕하고, T는 F를 감정 과잉이라고 질려 합니다. T는 제발 입 다물고 고개만 끄덕이고, F는 징징거림 좀 멈추세요.</p>",
+                doom: "<p><strong>[감정 파국]</strong> T의 피도 눈물도 없는 끝없는 가스라이팅과 팩트 폭력에, F가 화병으로 쓰러져 <b>응급실 실려가서 링거 맞는 엔딩</b>.</p>"
+            },
+            TT: {
+                score: 25,
+                normal: "<p><strong>[위기 대처와 감정]</strong> 결정을 내리는 기준(T)이 같아 갈등 상황에서 오해가 적습니다. 서로의 방식대로 위로하고 문제를 해결해 나갈 수 있습니다.</p>",
+                spicy: "<p><strong>[감정]</strong> 부부싸움이 아니라 법정 공방입니다. 서로 자기가 맞다고 논리로 물어뜯느라 감정선은 이미 다 타버렸습니다. 누가 이기든 상처만 남는 치킨게임입니다. 로봇끼리 사는 게 나을지도 모릅니다. AI 부부입니까?</p>",
+                doom: "<p><strong>[감정 파국]</strong> 서로 한 치의 양보도 없이 상대방 약점만 찌르며 피 튀기는 소송전 벌이다가, <b>위자료로 쌍방 변호사 배만 불려주는 엔딩</b>.</p>"
+            },
+            FF: {
+                score: 25,
+                normal: "<p><strong>[위기 대처와 감정]</strong> 결정을 내리는 기준(F)이 같아 갈등 상황에서 오해가 적습니다. 서로의 방식대로 위로하고 문제를 해결해 나갈 수 있습니다.</p>",
+                spicy: "<p><strong>[감정]</strong> 이성적인 판단은 없고 서로 서운한 감정만 산더미처럼 쌓입니다. 문제 해결은 안 하고 '네가 어떻게 나한테 그럴 수 있어'라며 서로를 감정 쓰레기통 취급하다가 매번 눈물바다로 끝납니다. 답답해서 복장이 터질 지경입니다.</p>",
+                doom: "<p><strong>[감정 파국]</strong> 매일 밤 서로 '네가 나한테 어떻게 이래!' 울고불고 물건 던지며 싸우다가, 이웃집 층간소음 신고로 <b>경찰 출동하는 막장 드라마 엔딩</b>.</p>"
+            }
+        },
+        JP: {
+            JP: {
+                score: 5,
+                normal: "<p><strong>[라이프스타일]</strong> 계획적인 J와 즉흥적인 P입니다. J는 P의 유연함을 통해 여유를 배우고, P는 J를 통해 삶의 안정감을 얻어보세요.</p>",
+                spicy: "<p><strong>[생활]</strong> J는 P의 뒤치다꺼리하느라 엄마/아빠 노릇 하다가 분노 게이지가 한계치를 돌파하고, P는 J의 숨 막히는 잔소리에 가출하고 싶어집니다. J가 통제권을 내려놓든, P가 사람 구실을 하든 둘 중 하나는 해야 가정이 유지됩니다.</p>",
+                doom: "<p><strong>[생활 파국]</strong> P가 대형 사고 쳐서 수습 불가 상태 만들고, J는 그거 뒷수습하다가 극심한 스트레스로 쓰러져 <b>뒷목 잡고 단명하는 엔딩</b>.</p>"
+            },
+            JJ: {
+                score: 15,
+                normal: "<p><strong>[라이프스타일]</strong> 생활 패턴(J)이 비슷해 집안일이나 일정을 조율할 때 스트레스가 적고 평화로운 일상을 유지하기 좋습니다.</p>",
+                spicy: "<p><strong>[생활]</strong> 숨 막히는 통제광들의 만남입니다. 서로 자기 방식대로 계획이 틀어지면 극도로 예민해져서 별것도 아닌 걸로 숨 막히게 싸웁니다. 완벽주의 강박에 시달리다 스트레스로 둘 다 제명에 못 살 수 있습니다.</p>",
+                doom: "<p><strong>[생활 파국]</strong> 서로 자기 규칙과 통제를 강요하다가 숨 막혀서 각방 쓰게 되고, 결국 집 한가운데 테이프로 선 긋고 사는 <b>기괴한 강박증 동거 엔딩</b>.</p>"
+            },
+            PP: {
+                score: 15,
+                normal: "<p><strong>[라이프스타일]</strong> 생활 패턴(P)이 비슷해 집안일이나 일정을 조율할 때 스트레스가 적고 평화로운 일상을 유지하기 좋습니다.</p>",
+                spicy: "<p><strong>[생활]</strong> 집안 꼬라지가 가관일 겁니다. 청소는 내일로 미루고, 계획은 기분 내키는 대로 바뀝니다. 여행 가면 비행기 놓치기 일쑤고, 중요한 세금 납부일도 까먹어 연체료 내는 게 일상입니다. 대책 없는 베짱이 두 마리네요.</p>",
+                doom: "<p><strong>[생활 파국]</strong> 귀찮다고 세금, 공과금 안 내다가 전기, 가스 다 끊기고 집 경매 넘어가서 <b>길거리에 나앉아 박스 줍는 베짱이 엔딩</b>.</p>"
+            }
+        }
+    };
+
+    const FINAL_COMMENTS = [
+        { min: 90, text: "💖 천생연분! 더할 나위 없는 최고의 파트너입니다." },
+        { min: 70, text: "🤝 서로 조금만 배려하면 평생의 베스트 프렌드가 될 수 있어요." },
+        { min: 50, text: "😅 다름을 인정하는 과정이 험난할 수 있지만, 맞춰가는 재미가 있겠죠?" },
+        { min: 0,  text: "🔥 로또 같은 부부! (정말 하나도 안 맞지만... 그래서 더 기적 같은 인연!)" }
+    ];
+
+    const MBTI_TYPES = [
+        'ESTJ','ESTP','ESFJ','ESFP','ENTJ','ENTP','ENFJ','ENFP',
+        'ISTJ','ISTP','ISFJ','ISFP','INTJ','INTP','INFJ','INFP'
+    ];
+
+    const ACCORDION_CONFIG = {
+        spicy: {
+            labelOpen:  "⚠️ [경고] 뼈 때리는 '매운맛' 팩폭 보기 (마상 주의)",
+            labelClose: "🙈 팩트 폭력 멈춰! (매운맛 닫기)",
+        },
+        doom: {
+            labelOpen:  "☠️ [위험] 돌이킬 수 없는 '파국/멸망편' 보기 (절대주의)",
+            labelClose: "😱 그만 봐! (멸망편 닫기)",
+        }
+    };
+
+    const QUESTIONS = {
         husband: [
             { type: "EI", q: "오랜만의 여유로운 주말, 아내와 어떻게 시간을 보내고 싶나요?", options: [
                 { text: "아내가 좋아할 만한 핫플레이스나 맛집을 찾아 적극적으로 외출을 제안한다.", val: "E" },
@@ -633,7 +899,7 @@
             { type: "EI", q: "남편의 회사 동료들이나 시댁 식구들이 모인 큰 자리에 참석했을 때 나는?", options: [
                 { text: "특유의 친화력으로 분위기를 주도하며 사람들과 대화하는 것을 즐긴다.", val: "E" },
                 { text: "처음 보는 사람에게도 어색함 없이 먼저 다가가 웃으며 인사를 건넨다.", val: "E" },
-                { text: "주로 남편 옆에 조용히 앉아 질문에 대답하며 미소를 일관하는 편이다.", val: "I" },
+                { text: "주로 남편 옆에 조용히 앉아 질문에 대답하며 미소를 띠는 편이다.", val: "I" },
                 { text: "사람이 많으면 기가 빨려서 빨리 이 모임이 끝나고 집에 가고 싶어진다.", val: "I" }
             ]},
             { type: "EI", q: "육아나 회사 일로 피곤했던 하루, 퇴근한 남편을 맞이할 때?", options: [
@@ -673,7 +939,7 @@
                 { text: "우리가 서로에게 상처 주는 말을 했다는 사실 자체가 너무 슬퍼서 눈물이 난다.", val: "F" }
             ]},
             { type: "TF", q: "내가 남편에게 가장 사랑받는다고 느끼는 순간은?", options: [
-                { text: "내가 힘들어하는 문제(가전 고장, 무거운 짐 등)를 군말 없이 척척 해결해 줄 때.", val: "T" },
+                { text: "내가 힘들어하는 문제(가전 고장, 무거운 대출 등)를 군말 없이 척척 해결해 줄 때.", val: "T" },
                 { text: "가정의 미래를 위해 책임감 있게 일하고 성과를 내어 안정을 가져다줄 때.", val: "T" },
                 { text: "예고 없이 다가와 뽀뽀해 주거나, 나를 빤히 보며 '예쁘다'고 애정 표현을 해줄 때.", val: "F" },
                 { text: "내가 지나가듯 한 말을 잊지 않고 기억했다가 소소하게 챙겨줄 때 (세심한 배려).", val: "F" }
@@ -699,80 +965,7 @@
         ]
     };
 
-    let activeQuestions = []; 
-    let currentRole = ""; 
-    let currentQuestionIndex = 0;
-    let scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
-    let myMBTI = "";
-    
-    let currentTestPhase = 1; 
-    let firstUserMBTI = ""; 
-    let secondUserMBTI = "";
-
-    function showScreen(screenId) {
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById(screenId).classList.add('active');
-    }
-
-    function selectRole(role) {
-        currentRole = role;
-        activeQuestions = questionsData[role];
-        currentTestPhase = 1; 
-        startQuiz();
-    }
-
-    function startQuiz() {
-        currentQuestionIndex = 0;
-        scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
-        showScreen('screen-quiz');
-        renderQuestion();
-    }
-
-    function renderQuestion() {
-        const qData = activeQuestions[currentQuestionIndex];
-        document.getElementById('question-count').innerText = `${currentQuestionIndex + 1} / ${activeQuestions.length}`;
-        document.getElementById('question-text').innerText = qData.q;
-        
-        const shuffledOptions = [...qData.options].sort(() => Math.random() - 0.5);
-        const buttons = document.getElementById('answer-buttons').querySelectorAll('button');
-        
-        for(let i=0; i<4; i++) {
-            buttons[i].innerText = shuffledOptions[i].text;
-            buttons[i].onclick = () => selectAnswer(shuffledOptions[i].val);
-        }
-
-        const progress = ((currentQuestionIndex + 1) / activeQuestions.length) * 100;
-        document.getElementById('progress-bar').style.width = `${progress}%`;
-    }
-
-    function selectAnswer(selectedValue) {
-        scores[selectedValue] += 1; 
-        currentQuestionIndex++;
-
-        if (currentQuestionIndex < activeQuestions.length) {
-            renderQuestion();
-        } else {
-            calculateMBTI();
-        }
-    }
-
-    function calculateMBTI() {
-        const EorI = scores.E >= scores.I ? "E" : "I";
-        const SorN = scores.S >= scores.N ? "S" : "N";
-        const TorF = scores.T >= scores.F ? "T" : "F";
-        const JorP = scores.J >= scores.P ? "J" : "P";
-        myMBTI = EorI + SorN + TorF + JorP;
-
-        if (currentTestPhase === 1) {
-            firstUserMBTI = myMBTI;
-        } else if (currentTestPhase === 2) {
-            secondUserMBTI = myMBTI;
-        }
-
-        renderMyResult();
-    }
-
-    const mbtiDetails = {
+    const MBTI_DETAILS = {
         "ESTJ": { desc: "책임감이 강하고 체계적으로 가정을 이끄는", pros: ["안정적이고 규칙적인 생활 환경 조성", "현실적인 문제 해결 능력 탁월", "가계 재무 관리에 철저함"], cons: ["자신의 방식을 배우자에게 강요할 수 있음", "공감보다 해결책을 먼저 제시해 서운함을 줌", "갑작스러운 계획 변경에 예민함"] },
         "ESFJ": { desc: "다정하고 헌신적이며 가족의 화목함을 최우선하는", pros: ["배우자의 감정을 잘 살피고 전폭적인 지지", "기념일이나 가족 행사를 꼼꼼히 챙김", "따뜻하고 화목한 분위기 주도"], cons: ["자신의 노력에 대한 보상이나 인정이 없으면 크게 서운해함", "타인의 시선에 예민해 스트레스를 잘 받음", "객관적인 비판을 감정적으로 받아들임"] },
         "ENTJ": { desc: "리더십 있고 미래지향적으로 가정을 발전시키는", pros: ["가족의 장기적인 비전과 목표 설정에 탁월함", "효율적으로 집안 대소사를 처리함", "배우자의 자기계발을 적극 지원"], cons: ["지나치게 통제하려 들거나 지시하는 말투 사용", "성과 위주로 생각하여 감정적 교감이 부족할 수 있음", "휴식 시간에도 생산성을 따져 피곤하게 함"] },
@@ -791,18 +984,134 @@
         "INFP": { desc: "낭만적이고 진정성 있어 배우자의 감정에 깊이 공감하는", pros: ["조건 없는 사랑과 깊은 정서적 교감을 나눔", "진정성 있고 로맨틱한 분위기 형성에 탁월함", "배우자의 독특한 개성을 가장 잘 이해하고 지지해 줌"], cons: ["현실 감각이 부족해 경제, 가사 관리에 소홀할 수 있음", "감정 기복이 크고 예민하여 배우자가 달래기 어려울 수 있음", "이상적인 부부상에 현실을 맞추려다 실망하기도 함"] }
     };
 
-    function renderMyResult() {
-        document.getElementById('my-mbti').innerText = myMBTI;
+    /* -------------------------------------------------------------------------
+     * STATE 및 유틸리티 영역
+     * ------------------------------------------------------------------------- */
+    const state = {
+        role:       '',
+        phase:      1,
+        qIndex:     0,
+        scores:     {}, // 초기화는 resetScores 함수로 처리
+        myMBTI:     '',
+        firstMBTI:  '',
+        secondMBTI: ''
+    };
+
+    function resetScores() {
+        state.scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+    }
+    resetScores(); // 선언 직후 한 번 호출
+
+    // 알파벳 조합 키 생성 (오름차순 정렬)
+    function comboKey(a, b) { return a <= b ? a + b : b + a; }
+
+    // Fisher-Yates 셔플
+    function shuffle(arr) {
+        const a = [...arr];
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+    }
+
+    // MBTI 셀렉트 옵션 동적 생성
+    function populateMbtiSelect(el) {
+        MBTI_TYPES.forEach(t => {
+            const opt = Object.assign(document.createElement('option'), { value: t, textContent: t });
+            el.appendChild(opt);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        ['direct-my-mbti', 'direct-partner-mbti', 'partner-mbti'].forEach(id => {
+            populateMbtiSelect(document.getElementById(id));
+        });
+    });
+
+    /* -------------------------------------------------------------------------
+     * 로직 영역
+     * ------------------------------------------------------------------------- */
+    function showScreen(screenId) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(screenId).classList.add('active');
+        // app-container 스크롤을 항상 최상단으로 초기화
+        document.querySelector('.app-container').scrollTop = 0;
+    }
+
+    function selectRole(role) {
+        state.role = role;
+        state.phase = 1; 
+        // 이전 흐름에서 남은 파트너 MBTI 선택값 초기화
+        document.getElementById('partner-mbti').value = '';
+        startQuiz();
+    }
+
+    function startQuiz() {
+        state.qIndex = 0;
+        resetScores();
+        showScreen('screen-quiz');
+        renderQuestion();
+    }
+
+    function renderQuestion() {
+        const questions = QUESTIONS[state.role];
+        const qData = questions[state.qIndex];
         
-        const details = mbtiDetails[myMBTI];
-        let roleText = currentRole === 'husband' ? "남편" : currentRole === 'wife' ? "아내" : "배우자";
-        document.getElementById('my-desc-main').innerText = `당신은 ${details.desc} ${roleText}입니다.`;
+        document.getElementById('question-count').textContent = `${state.qIndex + 1} / ${questions.length}`;
+        document.getElementById('question-text').textContent = qData.q;
+        
+        const shuffledOptions = shuffle(qData.options);
+        const buttons = document.getElementById('answer-buttons').querySelectorAll('button');
+        
+        for(let i = 0; i < 4; i++) {
+            buttons[i].textContent = shuffledOptions[i].text;
+            buttons[i].onclick = () => selectAnswer(shuffledOptions[i].val);
+        }
+
+        const progress = ((state.qIndex + 1) / questions.length) * 100;
+        document.getElementById('progress-bar').style.width = `${progress}%`;
+    }
+
+    function selectAnswer(selectedValue) {
+        state.scores[selectedValue] += 1; 
+        state.qIndex++;
+
+        if (state.qIndex < QUESTIONS[state.role].length) {
+            renderQuestion();
+        } else {
+            calculateMBTI();
+        }
+    }
+
+    function calculateMBTI() {
+        const EorI = state.scores.E >= state.scores.I ? "E" : "I";
+        const SorN = state.scores.S >= state.scores.N ? "S" : "N";
+        const TorF = state.scores.T >= state.scores.F ? "T" : "F";
+        const JorP = state.scores.J >= state.scores.P ? "J" : "P";
+        state.myMBTI = EorI + SorN + TorF + JorP;
+
+        if (state.phase === 1) {
+            state.firstMBTI = state.myMBTI;
+        } else if (state.phase === 2) {
+            state.secondMBTI = state.myMBTI;
+        }
+
+        renderMyResult();
+    }
+
+    function renderMyResult() {
+        document.getElementById('my-mbti').textContent = state.myMBTI;
+        
+        const details = MBTI_DETAILS[state.myMBTI];
+        const roleLabel = { husband: '남편', wife: '아내' }[state.role] ?? '배우자';
+        document.getElementById('my-desc-main').textContent = `당신은 ${details.desc} ${roleLabel}입니다.`;
         
         const prosUl = document.getElementById('my-pros');
         prosUl.innerHTML = "";
         details.pros.forEach(pro => {
             const li = document.createElement('li');
-            li.innerText = pro;
+            li.textContent = pro;
             prosUl.appendChild(li);
         });
 
@@ -810,27 +1119,29 @@
         consUl.innerHTML = "";
         details.cons.forEach(con => {
             const li = document.createElement('li');
-            li.innerText = con;
+            li.textContent = con;
             consUl.appendChild(li);
         });
         
-        if (currentTestPhase === 1) {
-            document.getElementById('partner-input-section').style.display = 'block';
-            document.getElementById('couple-mode-finish-section').style.display = 'none';
-        } else {
-            document.getElementById('partner-input-section').style.display = 'none';
-            document.getElementById('couple-mode-finish-section').style.display = 'block';
-        }
+        // CSS 클래스를 통한 디스플레이 토글 처리
+        const isPhase1 = state.phase === 1;
+        document.getElementById('partner-input-section').classList.toggle('hidden', !isPhase1);
+        document.getElementById('couple-mode-finish-section').classList.toggle('hidden', isPhase1);
 
         showScreen('screen-my-result');
     }
 
     function startPartnerTest() {
-        currentTestPhase = 2;
-        currentRole = (currentRole === 'husband') ? 'wife' : 'husband';
-        activeQuestions = questionsData[currentRole];
+        // 빠른 결과 보기(role 미설정) 상태에서는 커플 모드 진입 불가
+        if (!state.role) {
+            alert('테스트를 먼저 진행한 후 배우자에게 폰을 넘겨주세요!');
+            return;
+        }
+
+        state.phase = 2;
+        state.role = (state.role === 'husband') ? 'wife' : 'husband';
         
-        const nextRoleName = currentRole === 'husband' ? '남편' : '아내';
+        const nextRoleName = state.role === 'husband' ? '남편' : '아내';
         alert(`이제 ${nextRoleName}의 차례입니다! 폰을 넘겨주세요.`);
         
         startQuiz();
@@ -839,9 +1150,9 @@
     function showCompatibility() {
         let finalPartnerMBTI = "";
         
-        if (currentTestPhase === 2) {
-            myMBTI = firstUserMBTI;          
-            finalPartnerMBTI = secondUserMBTI; 
+        if (state.phase === 2) {
+            state.myMBTI = state.firstMBTI;          
+            finalPartnerMBTI = state.secondMBTI; 
         } else {
             finalPartnerMBTI = document.getElementById('partner-mbti').value;
             if (!finalPartnerMBTI) {
@@ -850,170 +1161,106 @@
             }
         }
 
-        document.getElementById('final-my-mbti').innerText = myMBTI;
-        document.getElementById('final-partner-mbti').innerText = finalPartnerMBTI;
+        document.getElementById('final-my-mbti').textContent = state.myMBTI;
+        document.getElementById('final-partner-mbti').textContent = finalPartnerMBTI;
 
         let score = 20; 
-        let normalHtml = "<h4 style='color:var(--secondary-color); margin-top:0; margin-bottom:15px; border-bottom:2px dashed #E9ECEF; padding-bottom:15px; font-size:1.15rem; display:flex; align-items:center; gap:8px;'><span>☕</span> 정신과 전문의의 따뜻한 조언</h4>";
-        let spicyHtml = "<h4 style='color:var(--danger-color); margin-top:0; font-size:1.2rem; border-bottom:1px solid rgba(255,71,87,0.2); padding-bottom:15px; margin-bottom:15px; display:flex; align-items:center; gap:8px;'><span>🔥</span> 마라맛 팩트 폭력</h4>";
-        let doomHtml = "<h4 style='color:#FF6B81; margin-top:0; font-size:1.2rem; border-bottom:1px solid rgba(255,107,129,0.2); padding-bottom:10px; margin-bottom:10px; display:flex; align-items:center; gap:8px;'><span>☠️</span> 파국 / 멸망편</h4><p style='font-size:0.85rem; color:#A4B0BE; margin-bottom:15px;'>※ 최악의 시나리오입니다. 절대 진지하게 받아들이지 마세요.</p>";
+        let normalContent = "";
+        let spicyContent = "";
+        let doomContent = "";
 
-        let eiCombo = [myMBTI[0], finalPartnerMBTI[0]].sort().join('');
-        if (eiCombo === 'EI') {
-            score += 10; 
-            normalHtml += "<p><strong>[에너지 충전]</strong> 외향형(E)과 내향형(I)의 만남입니다. 서로의 부족한 에너지를 채워주지만 휴식 방식이 달라 서운할 수 있습니다. 외출을 좋아하는 E와 집콕을 좋아하는 I가 <b>'따로 또 같이'</b> 휴식하는 지혜가 필요합니다.</p>";
-            spicyHtml += "<p><strong>[에너지]</strong> E는 주말마다 기어나가려 하고, I는 소파와 물아일체 되려 합니다. E가 I를 억지로 끌고 나가면 I는 썩은 표정으로 분위기 망치고, E가 혼자 나가 놀면 I는 버림받았다고 청승 떱니다. 완벽한 딜레마네요. 제발 각자도생하세요.</p>";
-            doomHtml += "<p><strong>[에너지 파국]</strong> E는 매일 밤 파티하느라 집에 안 들어오고, I는 집에서 곰팡이와 대화하며 혼자 늙어가는 철저한 <b>쇼윈도 부부 엔딩</b>.</p>";
-        } else if (eiCombo === 'EE') {
-            score += 20;
-            normalHtml += "<p><strong>[에너지 충전]</strong> 두 분 모두 에너지를 쓰는 방식(E)이 같아 주말을 보내는 호흡이 아주 잘 맞습니다. 함께 취미를 즐기며 시너지를 내보세요.</p>";
-            spicyHtml += "<p><strong>[에너지]</strong> 집안에 고요함이란 없습니다. 서로 밖에서 사람 만나고 노느라 바빠서 집은 그저 잠만 자는 하숙집 전락 위기입니다. 한 달 카드값의 절반이 식비와 모임 회비로 나가는 걸 보고도 정신 못 차리면 곧 파산입니다.</p>";
-            doomHtml += "<p><strong>[에너지 파국]</strong> 서로 밖으로만 돌다가 집안은 쓰레기장 되고, 인맥 관리한답시고 카드 빚 돌려막기하다 <b>쌍방 파산 및 야반도주 엔딩</b>.</p>";
-        } else { // II
-            score += 20;
-            normalHtml += "<p><strong>[에너지 충전]</strong> 두 분 모두 에너지를 쓰는 방식(I)이 같아 주말을 보내는 호흡이 아주 잘 맞습니다. 함께 취미를 즐기며 시너지를 내보세요.</p>";
-            spicyHtml += "<p><strong>[에너지]</strong> 집에만 박혀 있어서 세상 돌아가는 걸 모릅니다. 주말 내내 한 마디도 안 하고 각자 스마트폰만 볼 거면 룸메이트랑 다를 게 뭡니까? 광합성 부족입니다. 가끔은 햇빛 좀 보고 사세요. 둘 다 우울증 옵니다.</p>";
-            doomHtml += "<p><strong>[에너지 파국]</strong> 한 지붕 아래서 카톡으로만 대화하다가 인터넷 끊기면 서로 살았는지 죽었는지 생사도 모르는 <b>완벽한 고독사 엔딩</b>.</p>";
-        }
+        const DIM_KEYS = ['EI', 'SN', 'TF', 'JP'];
+        DIM_KEYS.forEach((dimKey, idx) => {
+            const key = comboKey(state.myMBTI[idx], finalPartnerMBTI[idx]);
+            const data = COMPAT_DATA[dimKey]?.[key];
 
-        let snCombo = [myMBTI[1], finalPartnerMBTI[1]].sort().join('');
-        if (snCombo === 'NS') {
-            score += 5; 
-            normalHtml += "<p><strong>[대화와 소통]</strong> 현실적인 S와 이상적인 N의 만남입니다. 대화 핀트가 엇갈릴 수 있지만, <b>S의 실행력과 N의 상상력이 합쳐지면 완벽한 팀워크</b>가 됩니다.</p>";
-            spicyHtml += "<p><strong>[소통]</strong> S에게 N의 말은 '뜬구름 잡는 헛소리'고, N에게 S는 '낭만이라곤 1도 없는 로봇'입니다. N이 신나서 상상력 펼칠 때 S가 팩트로 후려치면 N은 마음의 문을 닫습니다. 서로 외계어를 쓴다고 생각하고 통역기를 돌리세요.</p>";
-            doomHtml += "<p><strong>[소통 파국]</strong> N이 말도 안 되는 코인/주식/사업에 전 재산 꼴아박고, S가 뒤도 안 돌아보고 이혼 서류에 도장 찍고 떠나는 <b>적자생존 엔딩</b>.</p>";
-        } else if (snCombo === 'SS') {
-            score += 20;
-            normalHtml += "<p><strong>[대화와 소통]</strong> 세상을 바라보는 관점(S)이 비슷해 말이 잘 통합니다. 서로의 생각에 쉽게 공감할 수 있는 든든한 대화 상대입니다.</p>";
-            spicyHtml += "<p><strong>[소통]</strong> 현실적이다 못해 팍팍합니다. 기념일에도 가성비 따지다 분위기 다 망칩니다. '사랑해'라는 말보다 '이번 달 관리비 얼마 나왔어?'가 더 자연스러운, 낭만이라곤 1도 없는 비즈니스 파트너 관계입니다.</p>";
-            doomHtml += "<p><strong>[소통 파국]</strong> 생활비 10원 단위까지 엑셀로 따지며 숨 막히게 살다가, 돈 때문에 정 떨어져서 재산분할 소송 걸고 남보다 못한 사이가 되는 <b>비즈니스 파탄 엔딩</b>.</p>";
-        } else { // NN
-            score += 20;
-            normalHtml += "<p><strong>[대화와 소통]</strong> 세상을 바라보는 관점(N)이 비슷해 말이 잘 통합니다. 서로의 생각에 쉽게 공감할 수 있는 든든한 대화 상대입니다.</p>";
-            spicyHtml += "<p><strong>[소통]</strong> 둘 다 현실 감각이 제로입니다. 뜬구름 잡는 미래 계획만 세우다가 당장 내일 먹을 쌀통 비어있는 건 모릅니다. 둘 중 한 명이라도 통장 잔고를 확인하지 않으면 나중에 산속에 들어가서 텐트 치고 살아야 할 겁니다.</p>";
-            doomHtml += "<p><strong>[소통 파국]</strong> 둘이서 사이비 종교나 다단계에 나란히 빠져 전 재산 탕진하거나, 대책 없이 빚내서 세계여행 가다가 오지에서 <b>자연인 되는 엔딩</b>.</p>";
-        }
+            if (!data) {
+                console.warn(`COMPAT_DATA 조회 실패: ${dimKey}[${key}]`);
+                return; // 해당 지표 건너뜀
+            }
 
-        let tfCombo = [myMBTI[2], finalPartnerMBTI[2]].sort().join('');
-        if (tfCombo === 'FT') {
-            score -= 10; 
-            normalHtml += "<p><strong>[위기 대처와 감정]</strong> 논리적인 T와 감정적인 F입니다. 갈등 시 상처받기 쉬우니, <b>T는 해결책 제시 전 '공감'을 연습</b>하고, <b>F는 T의 사실 폭격을 '나를 돕기 위한 애정'으로 해석</b>해 보세요.</p>";
-            spicyHtml += "<p><strong>[감정] ⚠️ 최대 위기:</strong> 창과 방패의 대결입니다. F가 공감해 달라고 징징대면 T는 '그래서 결론이 뭔데?'라며 명치를 세게 때립니다. F는 T를 피도 눈물도 없다고 욕하고, T는 F를 감정 과잉이라고 질려 합니다. T는 제발 입 다물고 고개만 끄덕이고, F는 징징거림 좀 멈추세요.</p>";
-            doomHtml += "<p><strong>[감정 파국]</strong> T의 피도 눈물도 없는 끝없는 가스라이팅과 팩트 폭력에, F가 화병으로 쓰러져 <b>응급실 실려가서 링거 맞는 엔딩</b>.</p>";
-        } else if (tfCombo === 'TT') {
-            score += 25;
-            normalHtml += "<p><strong>[위기 대처와 감정]</strong> 결정을 내리는 기준(T)이 같아 갈등 상황에서 오해가 적습니다. 서로의 방식대로 위로하고 문제를 해결해 나갈 수 있습니다.</p>";
-            spicyHtml += "<p><strong>[감정]</strong> 부부싸움이 아니라 법정 공방입니다. 서로 자기가 맞다고 논리로 물어뜯느라 감정선은 이미 다 타버렸습니다. 누가 이기든 상처만 남는 치킨게임입니다. 로봇끼리 사는 게 나을지도 모릅니다. AI 부부입니까?</p>";
-            doomHtml += "<p><strong>[감정 파국]</strong> 서로 한 치의 양보도 없이 상대방 약점만 찌르며 피 튀기는 소송전 벌이다가, <b>위자료로 쌍방 변호사 배만 불려주는 엔딩</b>.</p>";
-        } else { // FF
-            score += 25;
-            normalHtml += "<p><strong>[위기 대처와 감정]</strong> 결정을 내리는 기준(F)이 같아 갈등 상황에서 오해가 적습니다. 서로의 방식대로 위로하고 문제를 해결해 나갈 수 있습니다.</p>";
-            spicyHtml += "<p><strong>[감정]</strong> 이성적인 판단은 없고 서로 서운한 감정만 산더미처럼 쌓입니다. 문제 해결은 안 하고 '네가 어떻게 나한테 그럴 수 있어'라며 서로를 감정 쓰레기통 취급하다가 매번 눈물바다로 끝납니다. 답답해서 복장이 터질 지경입니다.</p>";
-            doomHtml += "<p><strong>[감정 파국]</strong> 매일 밤 서로 '네가 나한테 어떻게 이래!' 울고불고 물건 던지며 싸우다가, 이웃집 층간소음 신고로 <b>경찰 출동하는 막장 드라마 엔딩</b>.</p>";
-        }
+            score += data.score;
+            normalContent += data.normal;
+            spicyContent += data.spicy;
+            doomContent += data.doom;
+        });
 
-        let jpCombo = [myMBTI[3], finalPartnerMBTI[3]].sort().join('');
-        if (jpCombo === 'JP') {
-            score += 5; 
-            normalHtml += "<p><strong>[라이프스타일]</strong> 계획적인 J와 즉흥적인 P입니다. J는 P의 유연함을 통해 여유를 배우고, P는 J를 통해 삶의 안정감을 얻어보세요.</p>";
-            spicyHtml += "<p><strong>[생활]</strong> J는 P의 뒤치다꺼리하느라 엄마/아빠 노릇 하다가 분노 게이지가 한계치를 돌파하고, P는 J의 숨 막히는 잔소리에 가출하고 싶어집니다. J가 통제권을 내려놓든, P가 사람 구실을 하든 둘 중 하나는 해야 가정이 유지됩니다.</p>";
-            doomHtml += "<p><strong>[생활 파국]</strong> P가 대형 사고 쳐서 수습 불가 상태 만들고, J는 그거 뒷수습하다가 극심한 스트레스로 쓰러져 <b>뒷목 잡고 단명하는 엔딩</b>.</p>";
-        } else if (jpCombo === 'JJ') {
-            score += 15;
-            normalHtml += "<p><strong>[라이프스타일]</strong> 생활 패턴(J)이 비슷해 집안일이나 일정을 조율할 때 스트레스가 적고 평화로운 일상을 유지하기 좋습니다.</p>";
-            spicyHtml += "<p><strong>[생활]</strong> 숨 막히는 통제광들의 만남입니다. 서로 자기 방식대로 계획이 틀어지면 극도로 예민해져서 별것도 아닌 걸로 숨 막히게 싸웁니다. 완벽주의 강박에 시달리다 스트레스로 둘 다 제명에 못 살 수 있습니다.</p>";
-            doomHtml += "<p><strong>[생활 파국]</strong> 서로 자기 규칙과 통제를 강요하다가 숨 막혀서 각방 쓰게 되고, 결국 집 한가운데 테이프로 선 긋고 사는 <b>기괴한 강박증 동거 엔딩</b>.</p>";
-        } else { // PP
-            score += 15;
-            normalHtml += "<p><strong>[라이프스타일]</strong> 생활 패턴(P)이 비슷해 집안일이나 일정을 조율할 때 스트레스가 적고 평화로운 일상을 유지하기 좋습니다.</p>";
-            spicyHtml += "<p><strong>[생활]</strong> 집안 꼬라지가 가관일 겁니다. 청소는 내일로 미루고, 계획은 기분 내키는 대로 바뀝니다. 여행 가면 비행기 놓치기 일쑤고, 중요한 세금 납부일도 까먹어 연체료 내는 게 일상입니다. 대책 없는 베짱이 두 마리네요.</p>";
-            doomHtml += "<p><strong>[생활 파국]</strong> 귀찮다고 세금, 공과금 안 내다가 전기, 가스 다 끊기고 집 경매 넘어가서 <b>길거리에 나앉아 박스 줍는 베짱이 엔딩</b>.</p>";
-        }
-
-        score = Math.max(0, Math.min(score, 100)); // 100점 고정 로직 유지
+        score = Math.max(0, Math.min(score, 100));
 
         let finalComment = "";
-        if (score >= 90) { finalComment = "💖 천생연분! 더할 나위 없는 최고의 파트너입니다."; } 
-        else if (score >= 70) { finalComment = "🤝 서로 조금만 배려하면 평생의 베스트 프렌드가 될 수 있어요."; } 
-        else if (score >= 50) { finalComment = "😅 다름을 인정하는 과정이 험난할 수 있지만, 맞춰가는 재미가 있겠죠?"; } 
-        else { finalComment = "🔥 로또 같은 부부! (정말 하나도 안 맞지만... 그래서 더 기적 같은 인연!)"; }
+        for (const c of FINAL_COMMENTS) {
+            if (score >= c.min) {
+                finalComment = c.text;
+                break;
+            }
+        }
 
-        normalHtml += `<div style='text-align:center; color:var(--text-main); font-size:1.05rem; font-weight:700; padding: 20px; background: rgba(255, 117, 140, 0.05); border-radius: 12px; margin-top: 25px;'>${finalComment}</div>`;
-
+        // HTML 조립 및 렌더링
+        const normalHtml = `
+            <h4 class='advice-header advice-normal-title'><span>☕</span> 정신과 전문의의 따뜻한 조언</h4>
+            ${normalContent}
+            <div class='final-comment-box'>${finalComment}</div>
+        `;
         document.getElementById('advice-text').innerHTML = normalHtml;
         
-        document.getElementById('spicy-container').innerHTML = `
-            <button class="spicy-toggle-btn" id="spicy-btn" onclick="toggleSpicy()">
-                ⚠️ [경고] 뼈 때리는 '매운맛' 팩폭 보기 (마상 주의)
-            </button>
-            <div id="spicy-content" class="spicy-content advice-content">
-                ${spicyHtml}
-            </div>
+        document.getElementById('acc-content-spicy').innerHTML = `
+            <h4 class='advice-header advice-spicy-title'><span>🔥</span> 마라맛 팩트 폭력</h4>
+            ${spicyContent}
+        `;
+        
+        document.getElementById('acc-content-doom').innerHTML = `
+            <h4 class='advice-header advice-doom-title'><span>☠️</span> 파국 / 멸망편</h4>
+            <p class='doom-subtitle'>※ 최악의 시나리오입니다. 절대 진지하게 받아들이지 마세요.</p>
+            ${doomContent}
         `;
 
-        document.getElementById('doom-container').innerHTML = `
-            <button class="doom-toggle-btn" id="doom-btn" onclick="toggleDoom()">
-                ☠️ [위험] 돌이킬 수 없는 '파국/멸망편' 보기 (절대주의)
-            </button>
-            <div id="doom-content" class="doom-content advice-content">
-                ${doomHtml}
-            </div>
-        `;
+        // 아코디언 버튼 초기화 (루프 적용)
+        ['spicy', 'doom'].forEach(id => {
+            const btn = document.getElementById(`acc-btn-${id}`);
+            const content = document.getElementById(`acc-content-${id}`);
+            btn.textContent = ACCORDION_CONFIG[id].labelOpen;
+            btn.classList.remove('open');
+            content.classList.remove('open');
+        });
 
         showScreen('screen-compatibility');
         animateValue("score", 0, score, 1000);
     }
 
-    function toggleSpicy() {
-        const content = document.getElementById('spicy-content');
-        const btn = document.getElementById('spicy-btn');
+    function toggleAccordion(id) {
+        const content = document.getElementById(`acc-content-${id}`);
+        const btn = document.getElementById(`acc-btn-${id}`);
+        const cfg = ACCORDION_CONFIG[id];
         
-        if (content.classList.contains('open')) {
-            content.classList.remove('open');
-            btn.innerHTML = "⚠️ [경고] 뼈 때리는 '매운맛' 팩폭 보기 (마상 주의)";
-            btn.style.background = "linear-gradient(135deg, #FF6B6B, #EE5253)";
-            btn.style.boxShadow = "0 6px 15px rgba(238, 82, 83, 0.3)";
-        } else {
-            content.classList.add('open');
-            btn.innerHTML = "🙈 팩트 폭력 멈춰! (매운맛 닫기)";
-            btn.style.background = "#A4B0BE";
-            btn.style.boxShadow = "none";
-        }
+        const isOpen = content.classList.toggle('open');
+        btn.classList.toggle('open');
+        btn.textContent = isOpen ? cfg.labelClose : cfg.labelOpen;
     }
 
-    function toggleDoom() {
-        const content = document.getElementById('doom-content');
-        const btn = document.getElementById('doom-btn');
-        
-        if (content.classList.contains('open')) {
-            content.classList.remove('open');
-            btn.innerHTML = "☠️ [위험] 돌이킬 수 없는 '파국/멸망편' 보기 (절대주의)";
-            btn.style.background = "linear-gradient(135deg, #2F3542, #1E272E)";
-            btn.style.color = "#FF6B81";
-            btn.style.borderColor = "#57606F";
-            btn.style.boxShadow = "0 6px 15px rgba(30, 39, 46, 0.4)";
-        } else {
-            content.classList.add('open');
-            btn.innerHTML = "😱 그만 봐! (멸망편 닫기)";
-            btn.style.background = "#57606F";
-            btn.style.color = "#ffffff";
-            btn.style.borderColor = "transparent";
-            btn.style.boxShadow = "none";
-        }
-    }
+    let _animateRafHandle = null;
 
     function animateValue(id, start, end, duration) {
-        let obj = document.getElementById(id);
+        // 이전 애니메이션 취소
+        if (_animateRafHandle !== null) {
+            cancelAnimationFrame(_animateRafHandle);
+            _animateRafHandle = null;
+        }
+
+        const obj = document.getElementById(id);
         let startTimestamp = null;
+
         const step = (timestamp) => {
             if (!startTimestamp) startTimestamp = timestamp;
             const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-            obj.innerHTML = Math.floor(progress * (end - start) + start);
+            obj.textContent = Math.floor(progress * (end - start) + start);
             if (progress < 1) {
-                window.requestAnimationFrame(step);
+                _animateRafHandle = window.requestAnimationFrame(step);
+            } else {
+                _animateRafHandle = null;
             }
         };
-        window.requestAnimationFrame(step);
+
+        _animateRafHandle = window.requestAnimationFrame(step);
     }
 
     function submitDirectInput() {
@@ -1025,11 +1272,11 @@
             return;
         }
 
-        currentTestPhase = 1;
-        firstUserMBTI = me;
-        myMBTI = me;
+        state.phase = 1;
+        state.firstMBTI = me;
+        state.myMBTI = me;
+        state.role = ''; // renderMyResult()에서 방어코드를 통해 '배우자'로 출력됨
         document.getElementById('partner-mbti').value = partner;
-        currentRole = "배우자"; 
         
         renderMyResult();
     }
